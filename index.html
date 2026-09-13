@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>曹锐旋｜嵌入式软件工程师</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+  :root { --ink:#22313a; --muted:#53636c; --line:#d8e3e1; --paper:#fffefa; --mist:#edf5f3; --aqua:#2f7880; --gold:#a77b37; --blue-wash:#e5f1f7; --gold-wash:#f8f1df; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); background:#e8eeec; font-family:"Noto Sans SC","Microsoft YaHei",Arial,sans-serif; font-size:10.1pt; line-height:1.42; }
+  .screen-toolbar { position:fixed; top:.75rem; right:.75rem; z-index:2; display:flex; flex-direction:column; align-items:stretch; gap:.5rem; }
+  .lock-button { position:fixed; top:.75rem; left:.75rem; z-index:2; }
+  button { border:1px solid #b9cfca; border-radius:4px; padding:.42rem .72rem; color:#174b50; background:#fff; font:inherit; cursor:pointer; }
+  button:hover, button:focus-visible { background:var(--mist); outline:2px solid #80aca7; outline-offset:2px; }
+  .page { width:210mm; min-height:297mm; margin:1.25rem auto 1.5rem; padding:11mm 10mm; background:var(--paper); position:relative; overflow:hidden; }
+  .page::before { content:""; position:absolute; width:200mm; height:200mm; top:-152mm; right:-85mm; border:1px solid rgba(47,120,128,.16); border-radius:50%; box-shadow:0 0 0 14mm rgba(47,120,128,.025),0 0 0 28mm rgba(167,123,55,.018); pointer-events:none; }
+  .resume { display:grid; grid-template-columns:31% 1fr; gap:7mm; position:relative; }
+  .sidebar { padding-right:5mm; border-right:1px solid var(--line); }
+  .main { min-width:0; }
+  .identity { border-bottom:2px solid var(--aqua); padding:0 0 3.5mm; margin-bottom:4mm; }
+  .name { margin:0; font:700 23pt/1.1 Georgia,"Noto Serif SC",serif; letter-spacing:.04em; color:#1f4145; }
+  .target { margin:.75mm 0 0; color:var(--gold); font-weight:700; letter-spacing:.08em; }
+  .intro { margin:0 0 3mm; color:#33484f; font-size:9.3pt; }
+  .section { margin:0 0 4.2mm; break-inside:avoid; }
+  .section-title { display:flex; align-items:center; min-height:6.5mm; margin:0 0 2mm; padding:0 2.4mm; background:var(--blue-wash); color:#244b53; font-size:11.2pt; font-weight:800; border-left:2.5px solid var(--aqua); }
+  .sidebar .section-title { font-size:10.2pt; background:var(--gold-wash); border-left-color:var(--gold); }
+  .section-title::before { content:"✦"; margin-right:1.5mm; color:var(--gold); font-size:8pt; }
+  .contact-list { margin:0; padding:0; list-style:none; }
+  .contact-list li { padding:1mm 0; border-bottom:1px solid #ebf0ee; overflow-wrap:anywhere; }
+  .label { display:inline-block; width:10mm; color:var(--muted); font-size:8.5pt; }
+  .link-value { color:#17626b; text-decoration:underline; text-decoration-color:#9bc8c3; cursor:text; }
+  .online-list li { display:grid; grid-template-columns:21mm minmax(0,1fr); align-items:center; gap:2mm; padding:2mm 0; }
+  .online-list li:last-child { border-bottom:0; }
+  .qr { display:flex; justify-content:center; align-items:center; width:21mm; height:21mm; padding:1.5mm; background:white; }
+  .qr img,.qr canvas { width:18mm!important; height:18mm!important; }
+  .online-heading { gap:1mm; }
+  .online-heading .online-nudge { margin-left:auto; color:#80622d; font-size:7.5pt; font-weight:500; white-space:nowrap; }
+  .online-info { min-width:0; }
+  .brand-icon { display:inline-block; width:1em; height:1em; margin-right:.35em; vertical-align:-.12em; fill:currentColor; }
+  .online-description { display:block; margin:0 0 1mm; color:#68747a; font-size:7pt; line-height:1.5; }
+  .is-locked .link-value { cursor:pointer; }
+  .online-name { display:block; color:#24535a; font-size:9pt; margin-bottom:1mm; }
+  .online-info .link-value { display:block; font-size:8pt; line-height:1.5; overflow-wrap:anywhere; }
+  .profile-layout { display:grid; grid-template-columns:minmax(0,1fr) 20mm; gap:2mm; align-items:start; }
+  .profile-photo { display:block; width:20mm; height:auto; border-radius:2px; }
+  .facts { margin:0; padding:0; list-style:none; }
+  .facts li { margin:0 0 1.25mm; }
+  .skill-group { margin:0 0 2.3mm; }
+  .skill-group strong { display:block; color:#24535a; font-size:9.2pt; }
+  .skill-group p { margin:.45mm 0 0; font-size:8.85pt; }
+  .skill-chips { display:flex; flex-wrap:wrap; gap:1mm; list-style:none; padding:0; margin:1mm 0 0; }
+  .skill-chips li { --chip:#e5f0ed; --chip-ink:#28544e; padding:.5mm 1.5mm; max-width:100%; border:1px solid rgba(76,110,108,.18); border-radius:3px; background:linear-gradient(135deg,rgba(255,255,255,.65),transparent),var(--chip); color:var(--chip-ink); box-shadow:inset 0 1px 0 rgba(255,255,255,.8); font-size:8pt; line-height:1.45; overflow-wrap:anywhere; break-inside:avoid; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .skill-chips .skill-emphasis { font-weight:700; }
+  .skill-chips li:nth-child(4n+2) { --chip:#e4edf7; --chip-ink:#354f6a; }
+  .skill-chips li:nth-child(4n+3) { --chip:#f4ecd9; --chip-ink:#69532c; }
+  .skill-chips li:nth-child(4n+4) { --chip:#f2e6e5; --chip-ink:#704c50; }
+  .entry { margin:0 0 3mm; break-inside:avoid; }
+  .entry:last-child { margin-bottom:0; }
+  .entry-head { display:flex; gap:3mm; justify-content:space-between; align-items:baseline; font-weight:700; }
+  .entry-title { font-size:10.6pt; }
+  .date { flex:none; color:var(--gold); font-size:8.8pt; white-space:nowrap; }
+  .subtitle { margin:.5mm 0 1mm; color:#4a6268; font-size:9pt; }
+  ul.detail { margin:1mm 0 0; padding-left:4.2mm; }
+  ul.detail li { margin:.55mm 0; }
+  [contenteditable="true"] { border-radius:2px; }
+  body:not(.is-locked) [contenteditable="true"]:hover { background:rgba(229,241,247,.55); }
+  body:not(.is-locked) [contenteditable="true"]:focus { outline:1px dashed var(--aqua); background:#fff; }
+  .hint { max-width:210mm; margin:0 auto .6rem; color:#496169; text-align:center; font-size:.84rem; }
+  @media (max-width:760px) { body { font-size:15px; } .page { width:100%; min-height:0; margin:4.5rem 0 0; padding:1.25rem; } .resume { grid-template-columns:1fr; gap:0; } .sidebar { padding:0; border:0; } .qr { min-height:0; } }
+  @media print { @page { size:A4; margin:0; } body { background:#fff; font-size:9.55pt; } .screen-toolbar,.hint { display:none!important; } .page { width:210mm; min-height:297mm; margin:0; padding:11mm 10mm; box-shadow:none; } .section { margin-bottom:3.3mm; } .entry { margin-bottom:2.3mm; } [contenteditable="true"]:hover,[contenteditable="true"]:focus { outline:0; background:transparent; } }
+</style>
+</head>
+<body>
+<button type="button" class="lock-button" id="lock-button" aria-pressed="true">🔒 已锁定</button>
+<nav class="screen-toolbar" aria-label="简历操作"><button type="button" id="pdf-button">导出 PDF</button><button type="button" id="markdown-button">导出 Markdown</button></nav>
+<main class="page" aria-label="曹锐旋的简历">
+  <div class="resume">
+    <aside class="sidebar">
+      <header class="identity">
+        <h1 class="name" contenteditable="true">曹锐旋</h1>
+        <p class="target" contenteditable="true">意向：嵌入式软件工程师</p>
+      </header>
+      <section class="section" aria-labelledby="profile-heading"><h2 id="profile-heading" class="section-title" contenteditable="true">个人概况</h2><div class="profile-layout"><ul class="facts"><li contenteditable="true">性别：男</li><li contenteditable="true">年龄：21岁</li><li contenteditable="true">MBTI：INTP</li><li contenteditable="true">居住地：广州</li></ul><img class="profile-photo" src="assets/照骗.JPG" alt="曹锐旋证件照" width="1018" height="1328"></div></section>
+      <section class="section" aria-labelledby="contact-heading"><h2 id="contact-heading" class="section-title" contenteditable="true">联系方式</h2>
+        <ul class="contact-list"><li><span class="label">手机</span><span contenteditable="true">13113328451</span></li><li><span class="label">邮箱</span><span contenteditable="true">ckrvxr@qq.com</span></li><li><span class="label">微信</span><span contenteditable="true">RayChaw2025</span></li></ul>
+      </section>
+      <section class="section" aria-labelledby="online-heading"><h2 id="online-heading" class="section-title online-heading"><span contenteditable="true">在线展示</span><span class="online-nudge" contenteditable="true">← 一定要看看呀</span></h2>
+        <ul class="contact-list online-list">
+          <li><div class="qr" id="personal-qr" aria-label="Notion Blog 二维码"></div><div class="online-info"><strong class="online-name"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 18V6h3l6 9V6h3v12h-3L9 9v9z"/></svg><span contenteditable="true">Notion Blog</span></strong><span class="online-description" contenteditable="true">成果展示、碎碎念、心得</span><a class="link-value" id="personal-url" href="https://ckrvxr.notion.site" target="_blank" rel="noopener noreferrer" contenteditable="true" aria-label="Notion Blog 链接">ckrvxr.notion.site</a></div></li>
+          <li><div class="qr" id="github-qr" aria-label="GitHub 二维码"></div><div class="online-info"><strong class="online-name"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297C5.37.297 0 5.67 0 12.297c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.52 11.52 0 0 1 3.003-.404c1.018.005 2.042.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.596 24 12.297c0-6.627-5.373-12-12-12"/></svg><span contenteditable="true">GitHub</span></strong><span class="online-description" contenteditable="true">各种古怪开源项目</span><a class="link-value" id="github-url" href="https://github.com/ckrvxr" target="_blank" rel="noopener noreferrer" contenteditable="true" aria-label="GitHub 链接">github.com/ckrvxr</a></div></li>
+        </ul>
+      </section>
+      <section class="section" aria-labelledby="skills-heading"><h2 id="skills-heading" class="section-title" contenteditable="true">技术能力</h2>
+        <div class="skill-group"><strong contenteditable="true">语言能力</strong><ul class="skill-chips"><li class="skill-emphasis" contenteditable="true">英语六级</li><li contenteditable="true">粤语</li><li class="skill-emphasis" contenteditable="true">C/C++</li><li contenteditable="true">JS</li><li contenteditable="true">Python</li><li contenteditable="true">Markdown</li></ul></div>
+        <div class="skill-group"><strong contenteditable="true">操作系统与工具链</strong><ul class="skill-chips"><li class="skill-emphasis" contenteditable="true">Linux</li><li class="skill-emphasis" contenteditable="true">Git</li><li contenteditable="true">CI/CD</li><li contenteditable="true">CMake</li><li contenteditable="true">Makefile</li><li contenteditable="true">SSH</li><li contenteditable="true">UV</li><li contenteditable="true">Docker</li></ul></div>
+        <div class="skill-group"><strong contenteditable="true">嵌入式开发</strong><ul class="skill-chips"><li class="skill-emphasis" contenteditable="true">FreeRTOS</li><li class="skill-emphasis" contenteditable="true">STM32</li><li contenteditable="true">ESP32</li><li contenteditable="true">UART</li><li contenteditable="true">SPI</li><li contenteditable="true">I²C</li><li contenteditable="true">CAN</li><li contenteditable="true">U8G2</li></ul></div>
+        <div class="skill-group"><strong contenteditable="true">硬件设计</strong><ul class="skill-chips"><li contenteditable="true">原理图设计</li><li class="skill-emphasis" contenteditable="true">PCB 布局</li><li class="skill-emphasis" contenteditable="true">焊接调试</li></ul></div>
+        <div class="skill-group"><strong contenteditable="true">AI/ML</strong><ul class="skill-chips"><li contenteditable="true">Agent</li><li contenteditable="true">Skill</li><li contenteditable="true">MuJoCo</li><li class="skill-emphasis" contenteditable="true">PyTorch</li></ul></div>
+        <div class="skill-group"><strong contenteditable="true">理论基础</strong><ul class="skill-chips"><li contenteditable="true">微机原理</li><li contenteditable="true">数据结构与算法</li><li contenteditable="true">计算机原理</li><li contenteditable="true">计算机网络</li><li contenteditable="true">控制理论</li></ul></div>
+      </section>
+    </aside>
+    <article class="main">
+      <section class="section" aria-labelledby="summary-heading"><h2 id="summary-heading" class="section-title" contenteditable="true">个人总结</h2><p class="intro" contenteditable="true">拥有从硬件底层到上层算法的全链路开发能力。具备出色的英文技术文献检索能力与独立攻坚难题的能力；在扎实基本功之上，善于运用 Codex、Pi Agent 等 AI 智能体进行高效迭代开发。</p></section>
+      <section class="section" aria-labelledby="education-heading"><h2 id="education-heading" class="section-title" contenteditable="true">教育经历</h2><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">惠州学院｜电子信息工程（本科）</span><span class="date" contenteditable="true">2023.09 — 2027.06</span></div><p class="subtitle" contenteditable="true">主修课程：C 语言、数字电路、微机原理、控制理论、数字信号处理。</p></div></section>
+      <section class="section" aria-labelledby="projects-heading"><h2 id="projects-heading" class="section-title" contenteditable="true">项目经历</h2><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">STM32F103 核心板开发与调试</span><span class="date" contenteditable="true">2023.11 — 2024.03</span></div><p class="subtitle" contenteditable="true">在师兄指导下完成核心板相关设计、开发与调试。</p><ul class="detail"><li contenteditable="true">完成降压电源电路的学习与设计，建立从原理图到硬件调试的实践基础。</li><li contenteditable="true">参与 STM32F103 核心板开发与调试，熟悉 MCU 外设及嵌入式开发流程。</li></ul></div></section>
+      <section class="section" aria-labelledby="campus-heading"><h2 id="campus-heading" class="section-title" contenteditable="true">校园经历</h2><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">RoboMaster 战队｜硬件组成员</span><span class="date" contenteditable="true">2023.11 — 2026.04</span></div><p class="subtitle" contenteditable="true">惠州学院</p><ul class="detail"><li contenteditable="true">参与电源模块设计、单片机核心板设计与机器人布线工作。</li><li contenteditable="true">参与部分电控代码编写，积累软硬件协同调试经验。</li></ul></div></section>
+      <section class="section" aria-labelledby="award-heading"><h2 id="award-heading" class="section-title" contenteditable="true">获奖情况</h2><p class="subtitle" contenteditable="true">可点击此处补充竞赛、奖学金或证书。</p></section>
+    </article>
+  </div>
+</main>
+<script>
+(() => {
+  const urls = [{ source: 'personal-url', target: 'personal-qr' }, { source: 'github-url', target: 'github-qr' }];
+  function normalizedUrl(value) { const url = value.trim(); return /^https?:\/\//i.test(url) ? url : `https://${url}`; }
+  function renderQr(source, target) {
+    const node = document.getElementById(target); const value = normalizedUrl(document.getElementById(source).innerText);
+    document.getElementById(source).href = value;
+    node.replaceChildren();
+    if (window.QRCode && value.length > 8) new QRCode(node, { text:value, width:94, height:94, colorDark:'#1f4145', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M });
+    else node.textContent = '二维码加载失败';
+  }
+  urls.forEach(({source,target}) => {
+    const link = document.getElementById(source);
+    link.addEventListener('click', event => {
+      if (link.isContentEditable) event.preventDefault();
+    });
+    renderQr(source,target);
+    link.addEventListener('input', () => renderQr(source,target));
+  });
+  const lockButton = document.getElementById('lock-button');
+  function setLocked(locked) {
+    document.body.classList.toggle('is-locked', locked);
+    document.querySelectorAll('[contenteditable]').forEach(node => node.contentEditable = String(!locked));
+    lockButton.setAttribute('aria-pressed', String(locked));
+    lockButton.textContent = locked ? '🔒 已锁定' : '🔓 编辑中';
+  }
+  setLocked(true);
+  lockButton.addEventListener('click', () => setLocked(lockButton.getAttribute('aria-pressed') !== 'true'));
+  document.getElementById('pdf-button').addEventListener('click', () => window.print());
+  function text(selector) { return document.querySelector(selector)?.innerText.trim() || ''; }
+  function markdown() {
+    const lines = [`# ${text('.name')}`, '', `**${text('.target')}**`, '', '## 联系方式'];
+    document.querySelectorAll('.contact-list li').forEach(item => lines.push(`- ${item.innerText.trim().replace(/\n/g, ' ')}`));
+    document.querySelectorAll('.main .section').forEach(section => { const title = section.querySelector('.section-title').innerText.trim(); lines.push('', `## ${title}`); section.querySelectorAll('.entry').forEach(entry => { const heading = entry.querySelector('.entry-title')?.innerText.trim(); const date = entry.querySelector('.date')?.innerText.trim(); if (heading) lines.push('', `### ${heading}${date ? `（${date}）` : ''}`); const subtitle = entry.querySelector('.subtitle')?.innerText.trim(); if (subtitle) lines.push(subtitle); entry.querySelectorAll('li').forEach(li => lines.push(`- ${li.innerText.trim()}`)); }); const intro = section.querySelector('.intro')?.innerText.trim(); if (intro) lines.push(intro); }); return lines.join('\n'); }
+  document.getElementById('markdown-button').addEventListener('click', () => { const blob = new Blob([markdown()], {type:'text/markdown;charset=utf-8'}); const link = Object.assign(document.createElement('a'), {href:URL.createObjectURL(blob), download:'曹锐旋-简历.md'}); link.click(); URL.revokeObjectURL(link.href); });
+})();
+</script>
+</body>
+</html>
