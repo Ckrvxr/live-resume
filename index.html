@@ -51,6 +51,7 @@
   .skill-group p { margin:.45mm 0 0; font-size:8.85pt; }
   .skill-chips { display:flex; flex-wrap:wrap; gap:1mm; list-style:none; padding:0; margin:1mm 0 0; }
   .skill-chips li { --chip:#e5f0ed; --chip-ink:#28544e; padding:.5mm 1.5mm; max-width:100%; border:1px solid rgba(76,110,108,.18); border-radius:3px; background:linear-gradient(135deg,rgba(255,255,255,.65),transparent),var(--chip); color:var(--chip-ink); box-shadow:inset 0 1px 0 rgba(255,255,255,.8); font-size:8pt; line-height:1.45; overflow-wrap:anywhere; break-inside:avoid; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .skill-chips li:not(.skill-emphasis) { color:color-mix(in srgb,var(--chip-ink) 78%,white); }
   .skill-chips .skill-emphasis { font-weight:700; }
   .skill-chips li:nth-child(4n+2) { --chip:#e4edf7; --chip-ink:#354f6a; }
   .skill-chips li:nth-child(4n+3) { --chip:#f4ecd9; --chip-ink:#69532c; }
