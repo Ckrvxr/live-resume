@@ -32,8 +32,8 @@
   .link-value { color:#17626b; text-decoration:underline; text-decoration-color:#9bc8c3; cursor:text; }
   .online-list li { display:grid; grid-template-columns:21mm minmax(0,1fr); align-items:center; gap:2mm; padding:2mm 0; }
   .online-list li:last-child { border-bottom:0; }
-  .qr { display:flex; justify-content:center; align-items:center; width:21mm; height:21mm; padding:1.5mm; background:white; }
-  .qr img,.qr canvas { width:18mm!important; height:18mm!important; }
+  .qr { display:flex; justify-content:center; align-items:center; width:21mm; height:21mm; padding:.6mm; background:white; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .qr svg { display:block; width:100%; height:100%; }
   .online-heading { gap:1mm; }
   .online-heading .online-nudge { margin-left:auto; color:#80622d; font-size:7.5pt; font-weight:500; white-space:nowrap; }
   .online-info { min-width:0; }
@@ -109,7 +109,7 @@
       <section class="section" aria-labelledby="education-heading"><h2 id="education-heading" class="section-title" contenteditable="true">教育经历</h2><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">惠州学院｜电子信息工程（本科）</span><span class="date" contenteditable="true">2023.09 — 至今</span></div><p class="subtitle" contenteditable="true">主修课程：C 语言、数字电路、微机原理、控制理论、数字信号处理。</p></div></section>
       <section class="section" aria-labelledby="campus-heading"><h2 id="campus-heading" class="section-title" contenteditable="true">校园经历</h2><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">RoboMaster 战队｜硬件组成员</span><span class="date" contenteditable="true">2023.11 — 2026.04</span></div><p class="subtitle" contenteditable="true">惠州学院</p><ul class="detail"><li contenteditable="true">参与电源模块设计、单片机核心板设计与机器人布线工作。</li><li contenteditable="true">参与部分电控代码编写，拥有软硬件协同调试经验。</li><li contenteditable="true">编写硬件组技术规范、教学文档，负责培训新成员。</li></ul></div></section>
       <section class="section" aria-labelledby="award-heading"><h2 id="award-heading" class="section-title" contenteditable="true">获奖情况</h2><ul class="detail"><li contenteditable="true">RoboMaster 2026 高校联盟赛 华南站 3v3 对抗赛 三等奖</li><li contenteditable="true">RoboMaster 2025 高校联盟赛 福建站 3v3 对抗赛（非甲级队伍）三等奖</li></ul></section>
-      <section class="section" aria-labelledby="projects-heading"><h2 id="projects-heading" class="section-title" contenteditable="true">项目经历</h2><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">ESP32-S3 心率手环与 CNN 心率检测模型训练<span class="project-tag team">团队</span></span><span class="date" contenteditable="true">2026.05 — 2026.07</span></div><p class="subtitle" contenteditable="true">基于 MAX30100 采集脉搏信号，结合轻量 CNN 实现高鲁棒性心率检测。</p><ul class="detail"><li contenteditable="true">负责基于 FreeRTOS 的信号采集、屏幕显示与按键交互开发。</li><li contenteditable="true">负责 PPG 数据标注、CNN 训练与验证，自动导出 MCU 端推理头文件。</li><li contenteditable="true">与团队成员对接微信小程序，负责 BLE 数据上报与联调。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">ESP32-S3 无线手柄云台控制系统<span class="project-tag">个人</span></span><span class="date" contenteditable="true">2025.12 — 2025.12</span></div><p class="subtitle" contenteditable="true">学习与实验性质的 ESP32-S3 的无线手柄云台控制系统。</p><ul class="detail"><li contenteditable="true">手柄端使用 MicroPython，封装摇杆 ADC 采集与状态编码。</li><li contenteditable="true">通过 ESP-NOW 广播 JSON 控制数据，实现手柄与云台通信。</li><li contenteditable="true">云台端基于 ESP-IDF 与 C++，接收数据并生成控制指令。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">STM32F407 模块化紧凑化飞控板<span class="project-tag">个人</span></span><span class="date" contenteditable="true">2025.07 — 2025.12</span></div><p class="subtitle" contenteditable="true">面向 RoboMaster 飞镖系统的模块化、紧凑型飞控板硬件设计。</p><ul class="detail"><li contenteditable="true">设计飞控板原理图与 PCB，集成主控、电源及 SBC 等外设扩展接口。</li><li contenteditable="true">采用模块化接口与高度紧凑布局，兼顾外设连接和结构安装。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">智能追踪与运动控制小车（25 电赛 E 题）<span class="project-tag team">团队</span></span><span class="date" contenteditable="true">2025.07 — 2025.08</span></div><p class="subtitle" contenteditable="true">与团队完成自主设计云台小车的组装与调试。</p><ul class="detail"><li contenteditable="true">参与整体方案设计，负责核心控制板设计与器件选型。</li><li contenteditable="true">负责将步进电机、灰度传感器、OLED 等模块驱动移植至 TI M0 MCU 平台。</li><li contenteditable="true">负责编写运动循迹代码，并制作电源分配系统。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">STM32F103 核心板开发与调试<span class="project-tag">个人</span></span><span class="date" contenteditable="true">2023.11 — 2024.03</span></div><p class="subtitle" contenteditable="true">受益于师兄的悉心指导，完成核心板设计、开发与调试。</p><ul class="detail"><li contenteditable="true">完成降压电源电路的学习与设计，建立从原理图到硬件调试的实践基础。</li><li contenteditable="true">参与 STM32F103 核心板开发与调试，熟悉 MCU 外设及嵌入式开发流程。</li></ul></div></section>
+      <section class="section" aria-labelledby="projects-heading"><h2 id="projects-heading" class="section-title" contenteditable="true">项目经历</h2><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">ESP32-S3 心率手环与 CNN 心率检测模型训练<span class="project-tag team">团队</span></span><span class="date" contenteditable="true">2026.05 — 2026.07</span></div><p class="subtitle" contenteditable="true">基于 MAX30100 采集脉搏信号，结合轻量 CNN 实现高鲁棒性心率检测。</p><ul class="detail"><li contenteditable="true">负责基于 FreeRTOS 的信号采集、屏幕显示与按键交互开发。</li><li contenteditable="true">负责 PPG 数据标注、CNN 训练与验证，自动导出 MCU 端推理头文件。</li><li contenteditable="true">与搭档对接微信小程序，负责 BLE 数据上报与联调。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">ESP32-S3 无线手柄云台控制系统<span class="project-tag">个人</span></span><span class="date" contenteditable="true">2025.12 — 2025.12</span></div><p class="subtitle" contenteditable="true">学习与实验性质的 ESP32-S3 的无线手柄云台控制系统。</p><ul class="detail"><li contenteditable="true">手柄端使用 MicroPython，封装摇杆 ADC 采集与状态编码。</li><li contenteditable="true">通过 ESP-NOW 广播 JSON 控制数据，实现手柄与云台通信。</li><li contenteditable="true">云台端基于 ESP-IDF 与 C++，接收数据并生成控制指令。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">STM32F407 模块化紧凑化飞控板<span class="project-tag">个人</span></span><span class="date" contenteditable="true">2025.07 — 2025.12</span></div><p class="subtitle" contenteditable="true">面向 RoboMaster 飞镖系统的模块化、紧凑型飞控板硬件设计。</p><ul class="detail"><li contenteditable="true">设计飞控板原理图与 PCB，集成主控、电源及 SBC 等外设扩展接口。</li><li contenteditable="true">采用模块化接口与高度紧凑布局，兼顾外设连接和结构安装。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">智能追踪与运动控制小车（25 电赛 E 题）<span class="project-tag team">团队</span></span><span class="date" contenteditable="true">2025.07 — 2025.08</span></div><p class="subtitle" contenteditable="true">与团队完成自主设计云台小车的组装与调试。</p><ul class="detail"><li contenteditable="true">参与整体方案设计，负责核心控制板设计与器件选型。</li><li contenteditable="true">负责将步进电机、灰度传感器、OLED 等模块驱动移植至 TI M0 MCU 平台。</li><li contenteditable="true">负责编写运动循迹代码，并制作电源分配系统。</li></ul></div><div class="entry"><div class="entry-head"><span class="entry-title" contenteditable="true">STM32F103 核心板开发与调试<span class="project-tag">个人</span></span><span class="date" contenteditable="true">2023.11 — 2024.03</span></div><p class="subtitle" contenteditable="true">受益于师兄的悉心指导，完成核心板设计、开发与调试。</p><ul class="detail"><li contenteditable="true">完成降压电源电路的学习与设计，建立从原理图到硬件调试的实践基础。</li><li contenteditable="true">参与 STM32F103 核心板开发与调试，熟悉 MCU 外设及嵌入式开发流程。</li></ul></div></section>
       <p class="subtitle" style="color:var(--muted);font-size:8pt;" contenteditable="true">项目细节和更多项目请到 <a href="https://ckrvxr.notion.site" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px;"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 18V6h3l6 9V6h3v12h-3L9 9v9z"/></svg>Notion</a> 和 <a href="https://github.com/ckrvxr" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px;"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297C5.37.297 0 5.67 0 12.297c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.52 11.52 0 0 1 3.003-.404c1.018.005 2.042.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.596 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a> 中浏览。</p>
     </article>
   </div>
@@ -118,12 +118,58 @@
 (() => {
   const urls = [{ source: 'personal-url', target: 'personal-qr' }, { source: 'github-url', target: 'github-qr' }];
   function normalizedUrl(value) { const url = value.trim(); return /^https?:\/\//i.test(url) ? url : `https://${url}`; }
+  function smoothQrPath(matrix) {
+    const n = matrix.getModuleCount();
+    const dark = (x,y) => x >= 0 && y >= 0 && x < n && y < n && matrix.isDark(y,x);
+    let path = '';
+    for (let y=0; y<n; y++) for (let x=0; x<n; x++) {
+      // Preserve finder patterns and separators; smooth both convex and concave joins.
+      const finder = (x<8 && y<8) || (x>=n-8 && y<8) || (x<8 && y>=n-8);
+      const r = finder ? 0 : .24;
+      if (!dark(x,y)) {
+        // Fill tiny inner-corner wedges only where three dark neighbours meet.
+        // Diagonal-only neighbours must remain separate.
+        if (r && dark(x-1,y) && dark(x,y-1) && dark(x-1,y-1))
+          path += `M${x} ${y}h${r}Q${x} ${y} ${x} ${y+r}Z`;
+        if (r && dark(x+1,y) && dark(x,y-1) && dark(x+1,y-1))
+          path += `M${x+1} ${y}v${r}Q${x+1} ${y} ${x+1-r} ${y}Z`;
+        if (r && dark(x+1,y) && dark(x,y+1) && dark(x+1,y+1))
+          path += `M${x+1} ${y+1}h${-r}Q${x+1} ${y+1} ${x+1} ${y+1-r}Z`;
+        if (r && dark(x-1,y) && dark(x,y+1) && dark(x-1,y+1))
+          path += `M${x} ${y+1}v${-r}Q${x} ${y+1} ${x+r} ${y+1}Z`;
+        continue;
+      }
+      const tl = !dark(x-1,y) && !dark(x,y-1) ? r : 0;
+      const tr = !dark(x+1,y) && !dark(x,y-1) ? r : 0;
+      const br = !dark(x+1,y) && !dark(x,y+1) ? r : 0;
+      const bl = !dark(x-1,y) && !dark(x,y+1) ? r : 0;
+      path += `M${x+tl} ${y}H${x+1-tr}Q${x+1} ${y} ${x+1} ${y+tr}V${y+1-br}Q${x+1} ${y+1} ${x+1-br} ${y+1}H${x+bl}Q${x} ${y+1} ${x} ${y+1-bl}V${y+tl}Q${x} ${y} ${x+tl} ${y}Z`;
+    }
+    return path;
+  }
   function renderQr(source, target) {
     const node = document.getElementById(target); const value = normalizedUrl(document.getElementById(source).innerText);
     document.getElementById(source).href = value;
     node.replaceChildren();
-    if (window.QRCode && value.length > 8) new QRCode(node, { text:value, width:94, height:94, colorDark:'#1f4145', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M });
-    else node.textContent = '二维码加载失败';
+    if (!window.QRCode || value.length <= 8) { node.textContent = '二维码加载失败'; return; }
+    try {
+      // qrcodejs 1.0.0 supplies the matrix; SVG keeps print output crisp.
+      const qr = new QRCode(document.createElement('div'), { text:value, width:94, height:94, correctLevel:QRCode.CorrectLevel.M });
+      const matrix = qr._oQRCode;
+      const n = matrix.getModuleCount();
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('viewBox', `-4 -4 ${n+8} ${n+8}`);
+      svg.setAttribute('aria-hidden', 'true');
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', smoothQrPath(matrix));
+      path.setAttribute('fill', '#1f4145');
+      svg.append(path);
+      node.append(svg);
+    } catch (error) {
+      node.textContent = '二维码生成失败';
+      console.error('QR rendering failed', error);
+    }
   }
   urls.forEach(({source,target}) => {
     const link = document.getElementById(source);
