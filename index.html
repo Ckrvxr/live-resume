@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>曹锐旋|纸质简历在线版</title>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="assets/qrcode.min.js"></script>
 <style>
   :root { --ink:#22313a; --muted:#53636c; --line:#d8e3e1; --paper:#fffefa; --mist:#edf5f3; --aqua:#2f7880; --gold:#a77b37; --blue-wash:#e5f1f7; --gold-wash:#f8f1df; }
   * { box-sizing:border-box; }
@@ -72,13 +72,13 @@
   body:not(.is-locked) [contenteditable="true"]:hover { background:rgba(229,241,247,.55); }
   body:not(.is-locked) [contenteditable="true"]:focus { outline:1px dashed var(--aqua); background:#fff; }
   .hint { max-width:210mm; margin:0 auto .6rem; color:#496169; text-align:center; font-size:.84rem; }
-  @media (max-width:760px) { body { font-size:15px; } .page { width:100%; min-height:0; margin:4.5rem 0 0; padding:1.25rem; } .resume { grid-template-columns:1fr; gap:0; } .sidebar { padding:0; border:0; } .qr { min-height:0; } }
-  @media print { @page { size:A4; margin:0; } body { background:#fff; font-size:9.55pt; } .screen-toolbar,.hint { display:none!important; } .page { width:210mm; min-height:297mm; margin:0; padding:11mm 10mm; box-shadow:none; } .section { margin-bottom:3.3mm; } .entry { margin-bottom:2.3mm; } [contenteditable="true"]:hover,[contenteditable="true"]:focus { outline:0; background:transparent; } }
+  @media screen and (max-width:760px) { body { font-size:15px; } .page { width:100%; min-height:0; margin:4.5rem 0 0; padding:1.25rem; } .resume { grid-template-columns:1fr; gap:0; } .sidebar { padding:0; border:0; } .qr { min-height:0; } }
+  @media print { @page { size:A4; margin:0; } body { background:var(--paper); font-size:9.55pt; print-color-adjust:exact; -webkit-print-color-adjust:exact; } .screen-toolbar,.lock-button,.hint { display:none!important; } .page { width:210mm; min-height:297mm; margin:0; padding:11mm 10mm; box-shadow:none; } .section { margin-bottom:3.3mm; } .entry { margin-bottom:2.3mm; } [contenteditable="true"]:hover,[contenteditable="true"]:focus { outline:0!important; background:transparent!important; } }
 </style>
 </head>
 <body>
 <button type="button" class="lock-button" id="lock-button" aria-pressed="true">🔒 已锁定</button>
-<nav class="screen-toolbar" aria-label="简历操作"><button type="button" id="pdf-button">导出 PDF</button><button type="button" id="markdown-button">导出 Markdown</button></nav>
+<nav class="screen-toolbar" aria-label="简历操作"><button type="button" id="print-button">打印 / 另存为 PDF</button><button type="button" id="markdown-button">导出 Markdown</button></nav>
 <main class="page" aria-label="曹锐旋的简历">
   <div class="resume">
     <aside class="sidebar">
@@ -101,7 +101,7 @@
       <section class="section" aria-labelledby="online-heading"><h2 id="online-heading" class="section-title online-heading"><span contenteditable="true">在线展示</span></h2>
         <ul class="contact-list online-list">
           <li><div class="qr" id="personal-qr" aria-label="Notion Blog 二维码"></div><div class="online-info"><strong class="online-name"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 18V6h3l6 9V6h3v12h-3L9 9v9z"/></svg><span contenteditable="true">Notion Blog</span></strong><span class="online-description" contenteditable="true">作品集、碎碎念、心得</span><a class="link-value" id="personal-url" href="https://ckrvxr.notion.site" target="_blank" rel="noopener noreferrer" contenteditable="true" aria-label="Notion Blog 链接">ckrvxr.notion.site</a></div></li>
-          <li><div class="qr" id="github-qr" aria-label="GitHub 二维码"></div><div class="online-info"><strong class="online-name"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297C5.37.297 0 5.67 0 12.297c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.52 11.52 0 0 1 3.003-.404c1.018.005 2.042.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.596 24 12.297c0-6.627-5.373-12-12-12"/></svg><span contenteditable="true">GitHub</span></strong><span class="online-description" contenteditable="true">各种古怪开源项目</span><a class="link-value" id="github-url" href="https://github.com/ckrvxr" target="_blank" rel="noopener noreferrer" contenteditable="true" aria-label="GitHub 链接">github.com/ckrvxr</a></div></li>
+          <li><div class="qr" id="github-qr" aria-label="GitHub 二维码"></div><div class="online-info"><strong class="online-name"><svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297C5.37.297 0 5.67 0 12.297c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.52 11.52 0 0 1 3.003-.404c1.018.005 2.042.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.596 24 12.297c0-6.627-5.373-12-12-12"/></svg><span contenteditable="true">GitHub</span></strong><span class="online-description" contenteditable="true">项目源码与小工具</span><a class="link-value" id="github-url" href="https://github.com/ckrvxr" target="_blank" rel="noopener noreferrer" contenteditable="true" aria-label="GitHub 链接">github.com/ckrvxr</a></div></li>
         </ul>
       </section>
     </aside>
@@ -189,13 +189,34 @@
   }
   setLocked(true);
   lockButton.addEventListener('click', () => setLocked(lockButton.getAttribute('aria-pressed') !== 'true'));
-  document.getElementById('pdf-button').addEventListener('click', () => window.print());
+  document.getElementById('print-button').addEventListener('click', () => window.print());
   function text(selector) { return document.querySelector(selector)?.innerText.trim() || ''; }
   function markdown() {
     const lines = [`# ${text('.name')}`, '', `**${text('.target')}**`, '', '## 联系方式'];
     document.querySelectorAll('.contact-list li').forEach(item => lines.push(`- ${item.innerText.trim().replace(/\n/g, ' ')}`));
-    document.querySelectorAll('.main .section').forEach(section => { const title = section.querySelector('.section-title').innerText.trim(); lines.push('', `## ${title}`); section.querySelectorAll('.entry').forEach(entry => { const heading = entry.querySelector('.entry-title')?.innerText.trim(); const date = entry.querySelector('.date')?.innerText.trim(); if (heading) lines.push('', `### ${heading}${date ? `（${date}）` : ''}`); const subtitle = entry.querySelector('.subtitle')?.innerText.trim(); if (subtitle) lines.push(subtitle); entry.querySelectorAll('li').forEach(li => lines.push(`- ${li.innerText.trim()}`)); }); const intro = section.querySelector('.intro')?.innerText.trim(); if (intro) lines.push(intro); }); return lines.join('\n'); }
-  document.getElementById('markdown-button').addEventListener('click', () => { const blob = new Blob([markdown()], {type:'text/markdown;charset=utf-8'}); const link = Object.assign(document.createElement('a'), {href:URL.createObjectURL(blob), download:'曹锐旋-简历.md'}); link.click(); URL.revokeObjectURL(link.href); });
+    document.querySelectorAll('.main .section').forEach(section => {
+      const title = section.querySelector('.section-title').innerText.trim();
+      lines.push('', `## ${title}`);
+      section.querySelectorAll('.entry').forEach(entry => {
+        const heading = entry.querySelector('.entry-title')?.innerText.trim();
+        const date = entry.querySelector('.date')?.innerText.trim();
+        if (heading) lines.push('', `### ${heading}${date ? `（${date}）` : ''}`);
+        const subtitle = entry.querySelector('.subtitle')?.innerText.trim();
+        if (subtitle) lines.push(subtitle);
+        entry.querySelectorAll('li').forEach(li => lines.push(`- ${li.innerText.trim()}`));
+      });
+      const intro = section.querySelector('.intro')?.innerText.trim();
+      if (intro) lines.push(intro);
+    });
+    return lines.join('\n');
+  }
+  document.getElementById('markdown-button').addEventListener('click', () => {
+    const url = URL.createObjectURL(new Blob([markdown()], { type: 'text/markdown;charset=utf-8' }));
+    const link = Object.assign(document.createElement('a'), { href: url, download: '曹锐旋-简历.md' });
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  });
+
 })();
 </script>
 </body>

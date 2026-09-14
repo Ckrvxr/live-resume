@@ -1,0 +1,13 @@
+{
+  "name": "editable-resume",
+  "version": "0.0.6",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "pdfjs-dist": "6.3.289",
+    "playwright": "1.63.0"
+  }
+}
