@@ -29,36 +29,16 @@ test('static resume edits in place and uses the browser print flow', async () =>
   await page.addInitScript(() => {
     window.__printCalls = 0;
     window.print = () => { window.__printCalls += 1; };
-    window.matchMedia = query => ({ matches: false, media: query, onchange: null, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; } });
   });
   await page.goto(pageUrl);
   await page.waitForFunction(() => document.querySelectorAll('.qr svg').length === 2);
+  assert.equal(await page.locator('.page').evaluate(node => getComputedStyle(node).transitionDuration), '0s');
+  assert.notEqual(await page.locator('#lock-button').evaluate(node => getComputedStyle(node).transitionDuration), '0s');
 
   assert.equal(await page.locator('#pdf-button').count(), 0);
   assert.equal(await page.locator('#print-button').count(), 1);
   assert.equal(await page.locator('#markdown-button').count(), 1);
-  assert.equal(await page.locator('#theme-button').count(), 1);
-  assert(Number.parseFloat(await page.locator('.theme-button').evaluate(node => getComputedStyle(node).minWidth)) >= 80);
-  assert.equal(await page.locator('.theme-icon').count(), 1);
-  assert.equal(await page.locator('.screen-controls').evaluate(node => getComputedStyle(node).flexDirection), 'column');
-  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
-  const darkSystemPage = await browser.newPage();
-  await darkSystemPage.addInitScript(() => {
-    window.matchMedia = query => ({ matches: query.includes('prefers-color-scheme: dark'), media: query, onchange: null, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; } });
-  });
-  await darkSystemPage.goto(pageUrl);
-  assert.equal(await darkSystemPage.evaluate(() => document.documentElement.dataset.theme), 'dark');
-  await darkSystemPage.emulateMedia({ media: 'print' });
-  assert.equal(await darkSystemPage.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()), '#111');
-  await darkSystemPage.close();
-  await page.click('#theme-button');
-  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
-  assert.equal(await page.locator('.page').evaluate(node => getComputedStyle(node).backgroundColor), 'rgb(27, 37, 40)');
-  await page.click('#theme-button');
-  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'mono');
-  assert.equal(await page.locator('.page').evaluate(node => getComputedStyle(node).backgroundColor), 'rgb(255, 255, 255)');
-  await page.click('#theme-button');
-  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
+  assert.equal(await page.locator('#theme-button').count(), 0);
   await page.click('#lock-button');
   await page.locator('.name').fill('曹锐旋测试');
   const markdownDownload = page.waitForEvent('download');
@@ -97,13 +77,14 @@ test('static resume edits in place and uses the browser print flow', async () =>
       decorationDisplay: decoration.display,
     };
   });
-  assert.equal(printStyles.ink, '#111');
-  assert.equal(printStyles.titleBackground, 'rgb(237, 237, 237)');
-  assert.equal(printStyles.titleBorder, 'rgb(17, 17, 17)');
-  assert.equal(printStyles.chipBackground, 'rgb(238, 238, 238)');
-  assert.equal(printStyles.chipBackgroundImage, 'none');
-  assert.equal(printStyles.chipShadow, 'none');
-  assert.equal(printStyles.decorationDisplay, 'none');
+  assert.equal(printStyles.ink, '#22313a');
+  assert.equal(printStyles.titleBackground, 'rgb(229, 241, 247)');
+  assert.equal(printStyles.titleBorder, 'rgb(47, 120, 128)');
+  assert.equal(printStyles.chipBackground, 'rgb(229, 240, 237)');
+  assert.match(printStyles.chipBackgroundImage, /linear-gradient/);
+  assert.match(printStyles.chipShadow, /inset/);
+  assert.equal(printStyles.decorationDisplay, 'block');
+  assert.equal(await page.locator('.page').evaluate(node => getComputedStyle(node).transitionDuration), '0s');
   const pdfBytes = new Uint8Array(await page.pdf({
     format: 'A4',
     printBackground: true,
