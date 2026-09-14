@@ -190,24 +190,75 @@
   setLocked(true);
   lockButton.addEventListener('click', () => setLocked(lockButton.getAttribute('aria-pressed') !== 'true'));
   document.getElementById('print-button').addEventListener('click', () => window.print());
-  function text(selector) { return document.querySelector(selector)?.innerText.trim() || ''; }
+  function markdownEscape(value) { return value.replace(/[\\`*_]/g, character => `\\${character}`); }
+  function inlineMarkdown(node) {
+    if (!node) return '';
+    if (node.nodeType === Node.TEXT_NODE) return markdownEscape(node.nodeValue.replace(/[ \t]+/g, ' '));
+    if (node.nodeType !== Node.ELEMENT_NODE) return '';
+    if (node.tagName === 'BR') return '\n';
+    const content = [...node.childNodes].map(inlineMarkdown).join('');
+    if (node.matches('strong, b')) return `**${content}**`;
+    if (node.matches('a')) {
+      const href = node.getAttribute('href');
+      return href ? `[${content}](${href})` : content;
+    }
+    return content;
+  }
+  function markdownText(node) { return inlineMarkdown(node).replace(/\s+/g, ' ').trim(); }
+  function plainMarkdownText(node) { return markdownEscape(node?.innerText.replace(/\s+/g, ' ').trim() || ''); }
+  function markdownQuote(value) { return value.split('\n').map(line => `> ${line}`).join('\n'); }
+  function markdownTableCell(value) { return value.replace(/\|/g, '\\|').replace(/\n/g, ' '); }
   function markdown() {
-    const lines = [`# ${text('.name')}`, '', `**${text('.target')}**`, '', '## 联系方式'];
-    document.querySelectorAll('.contact-list li').forEach(item => lines.push(`- ${item.innerText.trim().replace(/\n/g, ' ')}`));
-    document.querySelectorAll('.main .section').forEach(section => {
-      const title = section.querySelector('.section-title').innerText.trim();
-      lines.push('', `## ${title}`);
-      section.querySelectorAll('.entry').forEach(entry => {
-        const heading = entry.querySelector('.entry-title')?.innerText.trim();
-        const date = entry.querySelector('.date')?.innerText.trim();
-        if (heading) lines.push('', `### ${heading}${date ? `（${date}）` : ''}`);
-        const subtitle = entry.querySelector('.subtitle')?.innerText.trim();
-        if (subtitle) lines.push(subtitle);
-        entry.querySelectorAll('li').forEach(li => lines.push(`- ${li.innerText.trim()}`));
-      });
-      const intro = section.querySelector('.intro')?.innerText.trim();
-      if (intro) lines.push(intro);
+    const lines = [`# ${markdownText(document.querySelector('.name'))}`, '', `> ${markdownText(document.querySelector('.target'))}`];
+    const facts = [...document.querySelectorAll('.facts li')].map(item => `- ${markdownText(item)}`);
+    if (facts.length) lines.push('', '## 个人概况', '', ...facts);
+
+    const contacts = [...document.querySelectorAll('.contact-list:not(.online-list) li')];
+    lines.push('', '## 联系方式', '', ...contacts.map(item => {
+      const label = markdownText(item.querySelector('.label'));
+      const value = item.cloneNode(true);
+      value.querySelector('.label')?.remove();
+      return `- ${label}：${markdownText(value)}`;
+    }));
+    const online = [...document.querySelectorAll('.online-list li')].map(item => {
+      const name = plainMarkdownText(item.querySelector('.online-name'));
+      const description = markdownText(item.querySelector('.online-description'));
+      const link = item.querySelector('.link-value');
+      const linkText = link ? `[${name}](${link.getAttribute('href')})` : name;
+      return `- ${linkText}${description ? `：${description}` : ''}`;
     });
+    lines.push(...online);
+
+    const skillRows = [...document.querySelectorAll('.skill-group')].map(group => {
+      const title = plainMarkdownText(group.querySelector('strong'));
+      const skills = [...group.querySelectorAll('.skill-chips li')].map(skill => {
+        const value = markdownText(skill);
+        return skill.classList.contains('skill-emphasis') ? `**${value}**` : value;
+      });
+      return `| ${markdownTableCell(title)} | ${markdownTableCell(skills.join(' · '))} |`;
+    });
+    if (skillRows.length) lines.push('', '## 技术能力', '', '| 能力方向 | 技能 |', '| --- | --- |', ...skillRows);
+
+    document.querySelectorAll('.main .section').forEach(section => {
+      lines.push('', `## ${markdownText(section.querySelector('.section-title'))}`);
+      const intro = section.querySelector('.intro');
+      if (intro) lines.push('', markdownQuote(inlineMarkdown(intro).trim()));
+      section.querySelectorAll('.entry').forEach(entry => {
+        const titleNode = entry.querySelector('.entry-title');
+        const tag = entry.querySelector('.project-tag');
+        const title = titleNode?.cloneNode(true);
+        title?.querySelectorAll('.project-tag').forEach(node => node.remove());
+        const meta = [tag && `**${markdownText(tag)}**`, entry.querySelector('.date') && `*${markdownText(entry.querySelector('.date'))}*`].filter(Boolean).join(' · ');
+        lines.push('', `### ${markdownText(title)}`);
+        if (meta) lines.push(meta);
+        const subtitle = entry.querySelector('.subtitle');
+        if (subtitle) lines.push('', markdownQuote(inlineMarkdown(subtitle).trim()));
+        entry.querySelectorAll('.detail > li').forEach(item => lines.push(`- ${markdownText(item)}`));
+      });
+      if (!section.querySelector('.entry')) section.querySelectorAll('.detail > li').forEach(item => lines.push(`- ${markdownText(item)}`));
+    });
+    const footer = document.querySelector('.main > .subtitle');
+    if (footer) lines.push('', inlineMarkdown(footer).trim());
     return lines.join('\n');
   }
   document.getElementById('markdown-button').addEventListener('click', () => {

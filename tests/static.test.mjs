@@ -42,7 +42,16 @@ test('static resume edits in place and uses the browser print flow', async () =>
   await page.click('#markdown-button');
   const markdown = await readFile(await (await markdownDownload).path(), 'utf8');
   assert(markdown.includes('# 曹锐旋测试'));
+  assert(markdown.includes('> 意向：嵌入式软件工程师'));
+  assert(markdown.includes('## 个人概况'));
+  assert(markdown.includes('- 手机：13113328451'));
+  assert(markdown.includes('| 能力方向 | 技能 |'));
+  assert(markdown.includes('| --- | --- |'));
+  assert(markdown.includes('| 语言能力 |'));
+  assert(!markdown.includes('### 语言能力'));
+  assert(markdown.includes('[GitHub](https://github.com/ckrvxr)'));
   assert(markdown.includes('## 项目经历'));
+  assert(markdown.includes('**团队** · *2026.05 — 2026.07*'));
   await page.click('#print-button');
   assert.equal(await page.evaluate(() => window.__printCalls), 1);
   assert.deepEqual(pageErrors, []);
