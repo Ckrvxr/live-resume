@@ -10,12 +10,15 @@
   :root { --ink:#22313a; --muted:#53636c; --line:#d8e3e1; --paper:#fffefa; --mist:#edf5f3; --aqua:#2f7880; --gold:#a77b37; --blue-wash:#e5f1f7; --gold-wash:#f8f1df; --screen-bg:#e8eeec; --button-bg:#fff; --button-border:#b9cfca; --button-ink:#174b50; --focus:#80aca7; --ring-aqua:rgba(47,120,128,.16); --ring-gold:rgba(167,123,55,.018); --brand:#1f4145; --intro:#33484f; --subtle-line:#ebf0ee; --link:#17626b; --link-underline:#9bc8c3; --online-name:#24535a; --online-description:#68747a; --skill-heading:#24535a; --subtitle:#4a6268; --edit-hover:rgba(229,241,247,.55); --edit-focus:#fff; --qr-ink:#1f4145; --nudge:#80622d; }
   * { box-sizing:border-box; }
   body { margin:0; color:var(--ink); background:var(--screen-bg); font-family:"Noto Sans SC","Microsoft YaHei",Arial,sans-serif; font-size:10.1pt; line-height:1.42; }
+  body { isolation:isolate; }
+  .coastal-background { position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; background:linear-gradient(180deg,#c8e3ef 0%,#e8f3f1 55%,#f5efdE 100%); }
+  .coastal-background svg { display:block; width:100%; height:100%; }
   .lock-button { position:fixed; top:.75rem; left:.75rem; z-index:2; }
   .screen-toolbar { position:fixed; top:.75rem; right:.75rem; z-index:2; display:flex; flex-direction:column; align-items:stretch; gap:.5rem; }
   button { border:1px solid var(--button-border); border-radius:4px; padding:.42rem .72rem; color:var(--button-ink); background:var(--button-bg); font:inherit; cursor:pointer; transition:color .18s ease, background-color .18s ease, border-color .18s ease, outline-color .18s ease, transform .12s ease; }
   button:hover, button:focus-visible { background:var(--mist); outline:2px solid var(--focus); outline-offset:2px; }
   button:active { transform:translateY(1px); }
-  .page { width:210mm; min-height:297mm; margin:1.25rem auto 1.5rem; padding:11mm 10mm; background:var(--paper); position:relative; overflow:hidden; }
+  .page { width:210mm; min-height:297mm; margin:1.25rem auto 1.5rem; padding:11mm 10mm; background:var(--paper); position:relative; overflow:hidden; box-shadow:0 2px 4px rgba(35,57,64,.08),0 14px 36px rgba(35,57,64,.13),0 40px 80px rgba(35,57,64,.07); }
   .page::before { content:""; position:absolute; width:200mm; height:200mm; top:-152mm; right:-85mm; border:1px solid var(--ring-aqua); border-radius:50%; box-shadow:0 0 0 14mm rgba(47,120,128,.025),0 0 0 28mm var(--ring-gold); pointer-events:none; }
   .resume { display:grid; grid-template-columns:31% 1fr; gap:7mm; position:relative; }
   .sidebar { padding-right:5mm; border-right:1px solid var(--line); }
@@ -83,7 +86,7 @@
     @page { size:A4; margin:0; }
     *, *::before, *::after { transition:none!important; animation:none!important; }
     body { background:#fff; font-size:9.55pt; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
-    .screen-toolbar,.lock-button,.hint { display:none!important; }
+    .coastal-background,.screen-toolbar,.lock-button,.hint { display:none!important; }
     .page { width:210mm; min-height:297mm; margin:0; padding:11mm 10mm; box-shadow:none; }
     .section { margin-bottom:3.3mm; }
     .entry { margin-bottom:2.3mm; }
@@ -92,6 +95,56 @@
 </style>
 </head>
 <body>
+<div class="coastal-background" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" focusable="false">
+    <!-- Original fantasy landscape: airy skies, jade cliffs and floating ruins. -->
+    <defs>
+      <linearGradient id="cliff-wash" x2=".3" y2="1"><stop stop-color="#8fbdb7"/><stop offset="1" stop-color="#dce9dd"/></linearGradient>
+      <linearGradient id="sea-wash" x2="0" y2="1"><stop stop-color="#b0d9da"/><stop offset="1" stop-color="#e0ede4"/></linearGradient>
+      <radialGradient id="sun-wash"><stop stop-color="#fff9df" stop-opacity=".9"/><stop offset="1" stop-color="#fff9df" stop-opacity="0"/></radialGradient>
+    </defs>
+    <circle cx="1320" cy="160" r="200" fill="url(#sun-wash)"/>
+    <g opacity=".4" fill="#8bb3c3">
+      <path d="M0 640 65 492 100 516 163 364 205 386 251 548 315 490 400 672Z"/>
+      <path d="M1190 670 1260 520 1300 544 1360 400 1402 418 1450 554 1515 454 1600 530V700Z"/>
+    </g>
+    <g fill="url(#cliff-wash)" opacity=".7">
+      <path d="M-40 770V555L34 533 65 440 115 428 149 458 172 627 235 593 281 650 307 792Z"/>
+      <path d="M1290 799 1340 636 1390 623 1420 499 1467 476 1521 505 1542 607 1600 580V821Z"/>
+    </g>
+    <g fill="#aacabc" opacity=".7">
+      <path d="m65 440 18-17 34-8 32 43-42-11Z"/>
+      <path d="m1420 499 32-30 31 1 38 35-51-9Z"/>
+    </g>
+    <g opacity=".48">
+      <path d="m215 282 98-8-29 33-12 40-23-31Z" fill="#91b4b4"/>
+      <path d="m215 282 30-13 50-4 18 9-45 14Z" fill="#bed5bf"/>
+      <g fill="#eff3df"><path d="M248 272v-36h8v36Zm28-3v-45h8v44Z"/><path d="m244 236 1-7 15-1 1 8Zm28-12v-7h16v7Z"/></g>
+      <path d="m1260 340 65-5-20 24-10 28-16-29Z" fill="#9ebcbb"/>
+      <path d="m1260 340 25-13 26 1 14 7-32 11Z" fill="#c1d5bf"/>
+    </g>
+    <g fill="none" stroke="#fff" stroke-width="3" opacity=".45" stroke-linecap="round">
+      <path d="M0 578q95-30 198-4t153-3M1210 589q99-26 191-4t199-12M25 324q70 13 133-3m1203 71q59 10 126-5"/>
+    </g>
+    <g fill="#fff" opacity=".65">
+      <path d="M55 190c-26 0-30-36-6-45 0-29 38-43 58-22 18-38 78-30 85 13 36-8 53 45 16 54Z"/>
+      <path d="M1285 260c-37 0-42-45-10-56-2-40 48-57 72-28 26-44 91-24 92 22 41-4 49 62 6 62Z"/>
+      <path d="M1415 105c-21 0-26-28-7-37 4-28 41-33 55-11 23-17 53 1 51 24 21 6 15 24-3 24Z" opacity=".7"/>
+      <path d="M-45 410c-24-30 11-60 37-46 10-39 64-44 82-9 38-14 63 40 28 55Z" opacity=".6"/>
+    </g>
+    <path d="M0 725Q210 682 415 725T830 725T1245 725T1660 725V1000H0Z" fill="url(#sea-wash)" opacity=".8"/>
+    <path d="M0 785Q190 745 390 790T805 785T1220 788T1635 770V1000H0Z" fill="#96c9cc" opacity=".3"/>
+    <path d="M0 848C260 780 365 890 630 850S1010 812 1220 861 1470 830 1600 812V1000H0Z" fill="#faf8ef" opacity=".8"/>
+    <path d="M0 871C260 803 365 913 630 873S1010 835 1220 884 1470 853 1600 835V1000H0Z" fill="#e9d9b9" opacity=".4"/>
+    <g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".5">
+      <path d="M45 768q60-13 118-2m1190 38q86 17 154-2M75 820q36-8 68-3m1208-83q36-8 72-2"/>
+    </g>
+    <g fill="none" stroke="#c3b18b" stroke-width="2" stroke-linecap="round" opacity=".25">
+      <path d="M120 950q8-30-6-48m6 48q3-25 20-36m-20 36q-10-19-22-22M1460 955q-8-32 6-51m-6 51q-3-24-20-34"/>
+      <path d="M190 910l5-2m1120 42 6-1m255-40 5 2"/>
+    </g>
+  </svg>
+</div>
 <button type="button" class="lock-button" id="lock-button" aria-pressed="true">🔒 已锁定</button>
 <nav class="screen-toolbar" aria-label="简历操作"><button type="button" id="print-button">打印 / 另存为 PDF</button><button type="button" id="markdown-button">导出 Markdown</button></nav>
 <main class="page" aria-label="曹锐旋的简历">
@@ -99,7 +152,7 @@
     <aside class="sidebar">
       <header class="identity">
         <h1 class="name" contenteditable="true">曹锐旋</h1>
-        <p class="target" contenteditable="true">意向：嵌入式软件工程师</p>
+        <p class="target" contenteditable="true">意向：嵌入式软件实习</p>
       </header>
       <section class="section" aria-labelledby="profile-heading"><h2 id="profile-heading" class="section-title" contenteditable="true">个人概况</h2><div class="profile-layout"><ul class="facts"><li contenteditable="true">性别：男</li><li contenteditable="true">年龄：21岁</li><li contenteditable="true">籍贯：广州</li><li contenteditable="true">MBTI：INTP</li></ul><img class="profile-photo" src="assets/照骗.JPG" alt="曹锐旋证件照" width="1018" height="1328"></div></section>
       <section class="section" aria-labelledby="contact-heading"><h2 id="contact-heading" class="section-title" contenteditable="true">联系方式</h2>

@@ -46,7 +46,7 @@ test('static resume edits in place and uses the browser print flow', async () =>
   await page.click('#markdown-button');
   const markdown = await readFile(await (await markdownDownload).path(), 'utf8');
   assert(markdown.includes('# 曹锐旋测试'));
-  assert(markdown.includes('> 意向：嵌入式软件工程师'));
+  assert(markdown.includes('> 意向：嵌入式软件实习'));
   assert(markdown.includes('## 个人概况'));
   assert(markdown.includes('- 手机：13113328451'));
   assert(markdown.includes('| 能力方向 | 技能 |'));
