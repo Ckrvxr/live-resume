@@ -51,6 +51,7 @@ test('static resume edits in place and uses the browser print flow', async () =>
   assert(markdown.includes('| 能力方向 | 技能 |'));
   assert(markdown.includes('| --- | --- |'));
   assert(markdown.includes('| 语言能力 |'));
+  assert(markdown.includes('**Markdown** · Rust'));
   assert(!markdown.includes('### 语言能力'));
   assert(markdown.includes('[GitHub](https://github.com/ckrvxr)'));
   assert(markdown.includes('## 项目经历'));
