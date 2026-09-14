@@ -3,51 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+</script>
 <title>曹锐旋|纸质简历在线版</title>
 <script src="assets/qrcode.min.js"></script>
 <style>
-  :root { --ink:#22313a; --muted:#53636c; --line:#d8e3e1; --paper:#fffefa; --mist:#edf5f3; --aqua:#2f7880; --gold:#a77b37; --blue-wash:#e5f1f7; --gold-wash:#f8f1df; }
+  :root { --ink:#22313a; --muted:#53636c; --line:#d8e3e1; --paper:#fffefa; --mist:#edf5f3; --aqua:#2f7880; --gold:#a77b37; --blue-wash:#e5f1f7; --gold-wash:#f8f1df; --screen-bg:#e8eeec; --button-bg:#fff; --button-border:#b9cfca; --button-ink:#174b50; --focus:#80aca7; --ring-aqua:rgba(47,120,128,.16); --ring-gold:rgba(167,123,55,.018); --brand:#1f4145; --intro:#33484f; --subtle-line:#ebf0ee; --link:#17626b; --link-underline:#9bc8c3; --online-name:#24535a; --online-description:#68747a; --skill-heading:#24535a; --subtitle:#4a6268; --edit-hover:rgba(229,241,247,.55); --edit-focus:#fff; --qr-ink:#1f4145; --nudge:#80622d; }
   * { box-sizing:border-box; }
-  body { margin:0; color:var(--ink); background:#e8eeec; font-family:"Noto Sans SC","Microsoft YaHei",Arial,sans-serif; font-size:10.1pt; line-height:1.42; }
+  body { margin:0; color:var(--ink); background:var(--screen-bg); font-family:"Noto Sans SC","Microsoft YaHei",Arial,sans-serif; font-size:10.1pt; line-height:1.42; }
+  .screen-controls { position:fixed; top:.75rem; left:.75rem; z-index:2; display:flex; flex-direction:column; align-items:flex-start; gap:.5rem; }
+  .theme-button { display:inline-flex; align-items:center; gap:.35rem; min-width:5.2rem; }
+  .theme-icon { display:inline-flex; align-items:center; justify-content:center; width:1.3em; flex:0 0 1.3em; }
   .screen-toolbar { position:fixed; top:.75rem; right:.75rem; z-index:2; display:flex; flex-direction:column; align-items:stretch; gap:.5rem; }
-  .lock-button { position:fixed; top:.75rem; left:.75rem; z-index:2; }
-  button { border:1px solid #b9cfca; border-radius:4px; padding:.42rem .72rem; color:#174b50; background:#fff; font:inherit; cursor:pointer; }
-  button:hover, button:focus-visible { background:var(--mist); outline:2px solid #80aca7; outline-offset:2px; }
+  button { border:1px solid var(--button-border); border-radius:4px; padding:.42rem .72rem; color:var(--button-ink); background:var(--button-bg); font:inherit; cursor:pointer; }
+  button:hover, button:focus-visible { background:var(--mist); outline:2px solid var(--focus); outline-offset:2px; }
   .page { width:210mm; min-height:297mm; margin:1.25rem auto 1.5rem; padding:11mm 10mm; background:var(--paper); position:relative; overflow:hidden; }
-  .page::before { content:""; position:absolute; width:200mm; height:200mm; top:-152mm; right:-85mm; border:1px solid rgba(47,120,128,.16); border-radius:50%; box-shadow:0 0 0 14mm rgba(47,120,128,.025),0 0 0 28mm rgba(167,123,55,.018); pointer-events:none; }
+  .page::before { content:""; position:absolute; width:200mm; height:200mm; top:-152mm; right:-85mm; border:1px solid var(--ring-aqua); border-radius:50%; box-shadow:0 0 0 14mm rgba(47,120,128,.025),0 0 0 28mm var(--ring-gold); pointer-events:none; }
   .resume { display:grid; grid-template-columns:31% 1fr; gap:7mm; position:relative; }
   .sidebar { padding-right:5mm; border-right:1px solid var(--line); }
   .main { min-width:0; }
   .identity { border-bottom:2px solid var(--aqua); padding:0 0 3.5mm; margin-bottom:4mm; }
-  .name { margin:0; font:700 23pt/1.1 Georgia,"Noto Serif SC",serif; letter-spacing:.04em; color:#1f4145; }
+  .name { margin:0; font:700 23pt/1.1 Georgia,"Noto Serif SC",serif; letter-spacing:.04em; color:var(--brand); }
   .target { margin:.75mm 0 0; color:var(--gold); font-weight:700; letter-spacing:.08em; }
-  .intro { margin:0 0 3mm; color:#33484f; font-size:9.3pt; }
+  .intro { margin:0 0 3mm; color:var(--intro); font-size:9.3pt; }
   .section { margin:0 0 4.2mm; break-inside:avoid; }
   .section-title { display:flex; align-items:center; min-height:6.5mm; margin:0 0 2mm; padding:0 2.4mm; background:var(--blue-wash); color:#244b53; font-size:11.2pt; font-weight:800; border-left:2.5px solid var(--aqua); }
   .sidebar .section-title { font-size:10.2pt; background:var(--gold-wash); border-left-color:var(--gold); }
   .section-title::before { content:"✦"; margin-right:1.5mm; color:var(--gold); font-size:8pt; }
   .contact-list { margin:0; padding:0; list-style:none; }
-  .contact-list li { padding:1mm 0; border-bottom:1px solid #ebf0ee; overflow-wrap:anywhere; }
+  .contact-list li { padding:1mm 0; border-bottom:1px solid var(--subtle-line); overflow-wrap:anywhere; }
   .label { display:inline-block; width:10mm; color:var(--muted); font-size:8.5pt; }
-  .link-value { color:#17626b; text-decoration:underline; text-decoration-color:#9bc8c3; cursor:text; }
+  .link-value { color:var(--link); text-decoration:underline; text-decoration-color:var(--link-underline); cursor:text; }
   .online-list li { display:grid; grid-template-columns:21mm minmax(0,1fr); align-items:center; gap:2mm; padding:2mm 0; }
   .online-list li:last-child { border-bottom:0; }
   .qr { display:flex; justify-content:center; align-items:center; width:21mm; height:21mm; padding:.6mm; background:white; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
   .qr svg { display:block; width:100%; height:100%; }
+  .qr svg path { fill:var(--qr-ink); }
   .online-heading { gap:1mm; }
-  .online-heading .online-nudge { margin-left:auto; color:#80622d; font-size:7.5pt; font-weight:500; white-space:nowrap; }
+  .online-heading .online-nudge { margin-left:auto; color:var(--nudge); font-size:7.5pt; font-weight:500; white-space:nowrap; }
   .online-info { min-width:0; }
   .brand-icon { display:inline-block; width:1em; height:1em; margin-right:.35em; vertical-align:-.12em; fill:currentColor; }
-  .online-description { display:block; margin:0 0 1mm; color:#68747a; font-size:7pt; line-height:1.5; }
+  .online-description { display:block; margin:0 0 1mm; color:var(--online-description); font-size:7pt; line-height:1.5; }
   .is-locked .link-value { cursor:pointer; }
-  .online-name { display:block; color:#24535a; font-size:9pt; margin-bottom:1mm; }
-  .online-info .link-value { display:block; font-size:8pt; line-height:1.5; overflow-wrap:anywhere; }
+  .online-name { display:block; color:var(--online-name); font-size:9pt; margin-bottom:1mm; }
+  .online-info .link-value { display:block; color:var(--link); font-size:8pt; line-height:1.5; overflow-wrap:anywhere; }
   .profile-layout { display:grid; grid-template-columns:minmax(0,1fr) 20mm; gap:2mm; align-items:start; }
   .profile-photo { display:block; width:20mm; height:auto; border-radius:2px; }
   .facts { margin:0; padding:0; list-style:none; }
   .facts li { margin:0 0 1.25mm; }
   .skill-group { margin:0 0 2.3mm; }
-  .skill-group strong { display:block; color:#24535a; font-size:9.2pt; }
+  .skill-group strong { display:block; color:var(--skill-heading); font-size:9.2pt; }
   .skill-group p { margin:.45mm 0 0; font-size:8.85pt; }
   .skill-chips { display:flex; flex-wrap:wrap; gap:1mm; list-style:none; padding:0; margin:1mm 0 0; }
   .skill-chips li { --chip:#e5f0ed; --chip-ink:#28544e; padding:.5mm 1.5mm; max-width:100%; border:1px solid rgba(76,110,108,.18); border-radius:3px; background:linear-gradient(135deg,rgba(255,255,255,.65),transparent),var(--chip); color:var(--chip-ink); box-shadow:inset 0 1px 0 rgba(255,255,255,.8); font-size:8pt; line-height:1.45; overflow-wrap:anywhere; break-inside:avoid; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
@@ -65,19 +71,61 @@
   .entry-title:has(.project-tag) { display:inline-flex; align-items:center; gap:1.5mm; }
   .entry-title .project-tag { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; margin-left:0; line-height:1; padding:.6mm 1mm; }
   .date { flex:none; color:var(--gold); font-size:8.8pt; white-space:nowrap; }
-  .subtitle { margin:.5mm 0 1mm; color:#4a6268; font-size:9pt; }
+  .subtitle { margin:.5mm 0 1mm; color:var(--subtitle); font-size:9pt; }
   ul.detail { margin:1mm 0 0; padding-left:4.2mm; }
   ul.detail li { margin:.55mm 0; }
   [contenteditable="true"] { border-radius:2px; }
-  body:not(.is-locked) [contenteditable="true"]:hover { background:rgba(229,241,247,.55); }
-  body:not(.is-locked) [contenteditable="true"]:focus { outline:1px dashed var(--aqua); background:#fff; }
-  .hint { max-width:210mm; margin:0 auto .6rem; color:#496169; text-align:center; font-size:.84rem; }
+  body:not(.is-locked) [contenteditable="true"]:hover { background:var(--edit-hover); }
+  body:not(.is-locked) [contenteditable="true"]:focus { outline:1px dashed var(--aqua); background:var(--edit-focus); }
+  [data-theme="dark"] {
+    --ink:#e9f0ef; --muted:#adbcbd; --line:#465659; --paper:#1b2528; --mist:#28393b; --aqua:#80c7c4; --gold:#e0bd7d; --blue-wash:#26383e; --gold-wash:#403827;
+    --screen-bg:#101719; --button-bg:#1d2a2d; --button-border:#49696a; --button-ink:#e5f1f0; --focus:#8bd2ce; --ring-aqua:rgba(128,199,196,.24); --ring-gold:rgba(224,189,125,.16); --brand:#e0eeee; --intro:#d7e3e2; --subtle-line:#354548; --link:#8bd5d0; --link-underline:#5faaa4; --online-name:#bfe4e1; --online-description:#aab9ba; --skill-heading:#bfe4e1; --subtitle:#bfd0cf; --edit-hover:rgba(97,173,181,.24); --edit-focus:#243335; --qr-ink:#1f4145; --nudge:#dfc58d;
+  }
+  [data-theme="mono"] {
+    --ink:#111; --muted:#555; --line:#999; --paper:#fff; --mist:#f2f2f2; --aqua:#111; --gold:#333; --blue-wash:#ededed; --gold-wash:#f5f5f5;
+    --screen-bg:#e6e6e6; --button-bg:#fff; --button-border:#999; --button-ink:#111; --focus:#555; --ring-aqua:transparent; --ring-gold:transparent; --brand:#111; --intro:#222; --subtle-line:#ddd; --link:#111; --link-underline:#666; --online-name:#222; --online-description:#555; --skill-heading:#222; --subtitle:#333; --edit-hover:#f2f2f2; --edit-focus:#fff; --qr-ink:#111; --nudge:#444;
+  }
+  [data-theme="dark"] .page::before { box-shadow:0 0 0 14mm rgba(128,199,196,.06),0 0 0 28mm var(--ring-gold); }
+  [data-theme="mono"] .page::before { display:none; }
+  [data-theme="dark"] .skill-chips li { --chip:#2c3b3e; --chip-ink:#dce9e8; background:linear-gradient(135deg,rgba(255,255,255,.08),transparent),var(--chip); border-color:#526f71; box-shadow:none; }
+  [data-theme="mono"] .skill-chips li { --chip:#eee; --chip-ink:#222; background:#eee; border-color:#999; box-shadow:none; }
+  [data-theme="dark"] .project-tag { background:#2e3d3f; border-color:#597476; color:#d6e6e5; }
+  [data-theme="dark"] .project-tag.team { background:#443d30; border-color:#7d6d4f; color:#ead8aa; }
+  [data-theme="mono"] .project-tag { background:#eee; border-color:#999; color:#222; box-shadow:none; }
+  [data-theme="mono"] .project-tag.team { background:#e5e5e5; border-color:#888; color:#111; }
+  .hint { max-width:210mm; margin:0 auto .6rem; color:var(--muted); text-align:center; font-size:.84rem; }
   @media screen and (max-width:760px) { body { font-size:15px; } .page { width:100%; min-height:0; margin:4.5rem 0 0; padding:1.25rem; } .resume { grid-template-columns:1fr; gap:0; } .sidebar { padding:0; border:0; } .qr { min-height:0; } }
-  @media print { @page { size:A4; margin:0; } body { background:var(--paper); font-size:9.55pt; print-color-adjust:exact; -webkit-print-color-adjust:exact; } .screen-toolbar,.lock-button,.hint { display:none!important; } .page { width:210mm; min-height:297mm; margin:0; padding:11mm 10mm; box-shadow:none; } .section { margin-bottom:3.3mm; } .entry { margin-bottom:2.3mm; } [contenteditable="true"]:hover,[contenteditable="true"]:focus { outline:0!important; background:transparent!important; } }
+  @media print {
+    @page { size:A4; margin:0; }
+    :root { --ink:#111; --muted:#444; --line:#999; --paper:#fff; --mist:#f3f3f3; --aqua:#111; --gold:#333; --blue-wash:#ededed; --gold-wash:#f5f5f5; }
+    body { background:var(--paper); font-size:9.55pt; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .screen-toolbar,.screen-controls,.hint { display:none!important; }
+    .page { width:210mm; min-height:297mm; margin:0; padding:11mm 10mm; box-shadow:none; }
+    .page::before { display:none; }
+    .section { margin-bottom:3.3mm; }
+    .entry { margin-bottom:2.3mm; }
+    .identity { border-bottom-color:#111; }
+    .section-title { background:#ededed; color:#111; border-left-color:#111; }
+    .section-title::before { color:#444; }
+    .sidebar .section-title { background:#f5f5f5; border-left-color:#555; }
+    .intro,.subtitle { color:#222; }
+    .date { color:#333; }
+    .online-name { color:#222; }
+    .online-description { color:#555; }
+    .link-value,.online-info .link-value { color:#111; text-decoration-color:#666; }
+    .project-tag { background:#eee!important; border-color:#999!important; color:#222!important; box-shadow:none!important; }
+    .project-tag.team { background:#e5e5e5!important; border-color:#888!important; color:#111!important; }
+    .skill-chips li { background:#eee!important; background-image:none!important; border-color:#999; color:#222!important; box-shadow:none; }
+    .skill-chips li:not(.skill-emphasis) { color:#444!important; }
+    [contenteditable="true"]:hover,[contenteditable="true"]:focus { outline:0!important; background:transparent!important; }
+  }
 </style>
 </head>
 <body>
-<button type="button" class="lock-button" id="lock-button" aria-pressed="true">🔒 已锁定</button>
+<div class="screen-controls" aria-label="页面设置">
+  <button type="button" class="lock-button" id="lock-button" aria-pressed="true">🔒 已锁定</button>
+  <button type="button" class="theme-button" id="theme-button" aria-label="切换主题">☀️ 浅色</button>
+</div>
 <nav class="screen-toolbar" aria-label="简历操作"><button type="button" id="print-button">打印 / 另存为 PDF</button><button type="button" id="markdown-button">导出 Markdown</button></nav>
 <main class="page" aria-label="曹锐旋的简历">
   <div class="resume">
@@ -181,6 +229,29 @@
     link.addEventListener('input', () => renderQr(source,target));
   });
   const lockButton = document.getElementById('lock-button');
+  const themeButton = document.getElementById('theme-button');
+  const themes = [
+    { value:'light', label:'浅色', icon:'☀️' },
+    { value:'dark', label:'深色', icon:'🌙' },
+    { value:'mono', label:'黑白', icon:'◐' },
+  ];
+  function setTheme(theme) {
+    const option = themes.find(item => item.value === theme) || themes[0];
+    document.documentElement.dataset.theme = option.value;
+    const icon = document.createElement('span');
+    icon.className = 'theme-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = option.icon;
+    const label = document.createElement('span');
+    label.textContent = option.label;
+    themeButton.replaceChildren(icon, label);
+    themeButton.setAttribute('aria-label', `当前主题：${option.label}，点击切换`);
+  }
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+  themeButton.addEventListener('click', () => {
+    const current = themes.findIndex(item => item.value === document.documentElement.dataset.theme);
+    setTheme(themes[(current + 1) % themes.length].value);
+  });
   function setLocked(locked) {
     document.body.classList.toggle('is-locked', locked);
     document.querySelectorAll('[contenteditable]').forEach(node => node.contentEditable = String(!locked));

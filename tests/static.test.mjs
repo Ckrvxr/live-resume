@@ -29,6 +29,7 @@ test('static resume edits in place and uses the browser print flow', async () =>
   await page.addInitScript(() => {
     window.__printCalls = 0;
     window.print = () => { window.__printCalls += 1; };
+    window.matchMedia = query => ({ matches: false, media: query, onchange: null, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; } });
   });
   await page.goto(pageUrl);
   await page.waitForFunction(() => document.querySelectorAll('.qr svg').length === 2);
@@ -36,6 +37,28 @@ test('static resume edits in place and uses the browser print flow', async () =>
   assert.equal(await page.locator('#pdf-button').count(), 0);
   assert.equal(await page.locator('#print-button').count(), 1);
   assert.equal(await page.locator('#markdown-button').count(), 1);
+  assert.equal(await page.locator('#theme-button').count(), 1);
+  assert(Number.parseFloat(await page.locator('.theme-button').evaluate(node => getComputedStyle(node).minWidth)) >= 80);
+  assert.equal(await page.locator('.theme-icon').count(), 1);
+  assert.equal(await page.locator('.screen-controls').evaluate(node => getComputedStyle(node).flexDirection), 'column');
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
+  const darkSystemPage = await browser.newPage();
+  await darkSystemPage.addInitScript(() => {
+    window.matchMedia = query => ({ matches: query.includes('prefers-color-scheme: dark'), media: query, onchange: null, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; } });
+  });
+  await darkSystemPage.goto(pageUrl);
+  assert.equal(await darkSystemPage.evaluate(() => document.documentElement.dataset.theme), 'dark');
+  await darkSystemPage.emulateMedia({ media: 'print' });
+  assert.equal(await darkSystemPage.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()), '#111');
+  await darkSystemPage.close();
+  await page.click('#theme-button');
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+  assert.equal(await page.locator('.page').evaluate(node => getComputedStyle(node).backgroundColor), 'rgb(27, 37, 40)');
+  await page.click('#theme-button');
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'mono');
+  assert.equal(await page.locator('.page').evaluate(node => getComputedStyle(node).backgroundColor), 'rgb(255, 255, 255)');
+  await page.click('#theme-button');
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
   await page.click('#lock-button');
   await page.locator('.name').fill('曹锐旋测试');
   const markdownDownload = page.waitForEvent('download');
@@ -59,6 +82,28 @@ test('static resume edits in place and uses the browser print flow', async () =>
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.locator('.resume').evaluate(node => getComputedStyle(node).gridTemplateColumns.split(' ').length), 1);
   await page.emulateMedia({ media: 'print' });
+  const printStyles = await page.evaluate(() => {
+    const root = getComputedStyle(document.documentElement);
+    const title = getComputedStyle(document.querySelector('.main .section-title'));
+    const chip = getComputedStyle(document.querySelector('.skill-chips li'));
+    const decoration = getComputedStyle(document.querySelector('.page'), '::before');
+    return {
+      ink: root.getPropertyValue('--ink').trim(),
+      titleBackground: title.backgroundColor,
+      titleBorder: title.borderLeftColor,
+      chipBackground: chip.backgroundColor,
+      chipBackgroundImage: chip.backgroundImage,
+      chipShadow: chip.boxShadow,
+      decorationDisplay: decoration.display,
+    };
+  });
+  assert.equal(printStyles.ink, '#111');
+  assert.equal(printStyles.titleBackground, 'rgb(237, 237, 237)');
+  assert.equal(printStyles.titleBorder, 'rgb(17, 17, 17)');
+  assert.equal(printStyles.chipBackground, 'rgb(238, 238, 238)');
+  assert.equal(printStyles.chipBackgroundImage, 'none');
+  assert.equal(printStyles.chipShadow, 'none');
+  assert.equal(printStyles.decorationDisplay, 'none');
   const pdfBytes = new Uint8Array(await page.pdf({
     format: 'A4',
     printBackground: true,
