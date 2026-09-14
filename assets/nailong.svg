@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <title>奶龙图标</title>
+  <circle cx="64" cy="64" r="62" fill="#000"></circle>
+
+  <!-- 奶龙轮廓 -->
+  <path fill="#fff" d="
+    M64 16
+    C42 16 29 32 29 51
+    C28 61 31 68 35 73
+    C26 76 23 87 27 95
+    C29 100 33 102 38 101
+    L35 108
+    Q32 114 40 114
+    H88
+    Q96 114 93 108
+    L90 101
+    C96 102 101 97 102 91
+    C104 83 100 76 95 73
+    C102 69 102 62 96 57
+    C98 33 86 16 64 16Z"></path>
+
+  <!-- 五官 -->
+  <g fill="#000">
+    <ellipse cx="48" cy="49" rx="6" ry="7"></ellipse>
+    <ellipse cx="79" cy="48" rx="6" ry="7"></ellipse>
+  </g>
+  <g stroke="#000" stroke-width="4" stroke-linecap="round">
+    <path d="M60 70Q65 74 70 70"></path>
+    <path d="M40 65C49 63 54 71 49 80L43 88"></path>
+    <path d="M87 65C78 63 73 71 78 80L84 88"></path>
+  </g>
+</svg>

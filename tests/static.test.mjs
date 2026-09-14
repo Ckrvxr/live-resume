@@ -32,6 +32,7 @@ test('static resume edits in place and uses the browser print flow', async () =>
   });
   await page.goto(pageUrl);
   await page.waitForFunction(() => document.querySelectorAll('.qr svg').length === 2);
+  assert.equal(await page.locator('link[rel="icon"]').getAttribute('href'), 'assets/nailong.svg');
   assert.equal(await page.locator('.page').evaluate(node => getComputedStyle(node).transitionDuration), '0s');
   assert.notEqual(await page.locator('#lock-button').evaluate(node => getComputedStyle(node).transitionDuration), '0s');
 
