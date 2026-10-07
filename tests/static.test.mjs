@@ -81,6 +81,7 @@ test('static resume stays read-only and supports export and printing via agent-b
       buttons: ['pdf', 'print', 'markdown', 'theme', 'lock'].map(name => document.querySelectorAll('#' + name + '-button').length),
       editable: document.querySelector('.name').isContentEditable,
       skills: [...document.querySelector('.skill-group .skill-chips').children].map(node => node.innerText),
+      chipWeights: Object.fromEntries([...document.querySelectorAll('.skill-chips li')].map(node => [node.innerText, getComputedStyle(node).fontWeight])),
     };
   })()`);
   assert.equal(screen.favicon, 'assets/nailong.svg');
@@ -89,6 +90,14 @@ test('static resume stays read-only and supports export and printing via agent-b
   assert.deepEqual(screen.buttons, [0, 1, 1, 0, 0]);
   assert.equal(screen.editable, false);
   assert.deepEqual(screen.skills, ['英语六级', '粤语', 'C/C++', 'JS', 'Python', 'Rust', 'Markdown']);
+  assert.equal(screen.chipWeights.uv, '400');
+  assert.equal(screen.chipWeights.UV, undefined);
+  assert.equal(screen.chipWeights.U8g2, '400');
+  assert.equal(screen.chipWeights.U8G2, undefined);
+  assert.equal(screen.chipWeights['原理图设计'], '700');
+  assert.equal(screen.chipWeights['焊接调试'], '400');
+  assert.equal(screen.chipWeights.CNN, '400');
+  assert.equal(screen.chipWeights.MuJoCo, undefined);
   await agentBrowser('screenshot', resolve(artifacts, 'desktop.png'));
 
   const markdownPath = resolve(artifacts, 'resume.md');
@@ -102,8 +111,20 @@ test('static resume stays read-only and supports export and printing via agent-b
   assert(markdown.includes('| --- | --- |'));
   assert(markdown.includes('| 语言能力 |'));
   assert(markdown.includes('Rust · **Markdown**'));
+  assert(markdown.includes(' · uv · '));
+  assert(markdown.includes(' · U8g2 |'));
+  assert(markdown.includes('| 硬件开发 | **原理图设计** · **PCB 布局** · 焊接调试 |'));
+  assert(markdown.includes('| AI/ML | **Agent** · Skill · **PyTorch** · CNN |'));
   assert(!markdown.includes('### 语言能力'));
   assert(markdown.includes('[GitHub](https://github.com/ckrvxr)'));
+  assert(markdown.includes('## 个人简介'));
+  assert(markdown.includes('### RoboMaster 战队｜硬件组组长'));
+  assert(markdown.includes('- 负责电源模块设计、单片机核心板设计与机器人布线工作。'));
+  assert(markdown.includes('- 负责电控底盘代码编写，拥有软硬件协同调试经验。'));
+  assert(markdown.includes('- 制定硬件组技术规范、教学文档，负责培训新成员。'));
+  assert(!markdown.includes('（非甲级队伍）'));
+  assert(markdown.includes('- RoboMaster 2025 高校联盟赛 福建站 3v3 对抗赛 三等奖'));
+  assert(markdown.includes('- RoboMaster 2024 高校联盟赛 华南站 步兵对抗赛 二等奖'));
   assert(markdown.includes('## 代表项目'));
   assert(markdown.includes('**团队** · *2026.05 — 2026.07*'));
   await evaluate('window.__printCalls = 0; window.print = () => { window.__printCalls += 1; }; true');
