@@ -81,7 +81,11 @@ test('static resume stays read-only and supports export and printing via agent-b
       buttons: ['pdf', 'print', 'markdown', 'theme', 'lock'].map(name => document.querySelectorAll('#' + name + '-button').length),
       editable: document.querySelector('.name').isContentEditable,
       skills: [...document.querySelector('.skill-group .skill-chips').children].map(node => node.innerText),
+      skillGroupNames: [...document.querySelectorAll('.skill-group > strong')].map(node => node.innerText),
+      toolchainSkills: [...[...document.querySelectorAll('.skill-group')].find(group => group.querySelector('strong').innerText === '操作系统与工具链').querySelectorAll('.skill-chips li')].map(node => node.innerText),
+      hardwareSkills: [...[...document.querySelectorAll('.skill-group')].find(group => group.querySelector('strong').innerText === '硬件开发').querySelectorAll('.skill-chips li')].map(node => node.innerText),
       chipWeights: Object.fromEntries([...document.querySelectorAll('.skill-chips li')].map(node => [node.innerText, getComputedStyle(node).fontWeight])),
+      chipBackgrounds: [...document.querySelectorAll('.skill-chips li')].map(node => getComputedStyle(node).backgroundColor),
       profileFacts: [...document.querySelectorAll('.facts li')].map(node => node.innerText),
       profileEducation: document.querySelector('.sidebar [aria-labelledby="profile-heading"] [aria-labelledby="education-heading"]')?.innerText,
       mainEducationCount: document.querySelectorAll('.main [aria-labelledby="education-heading"]').length,
@@ -92,15 +96,16 @@ test('static resume stays read-only and supports export and printing via agent-b
   assert.notEqual(screen.buttonTransition, '0s');
   assert.deepEqual(screen.buttons, [0, 1, 1, 0, 0]);
   assert.equal(screen.editable, false);
-  assert.deepEqual(screen.skills, ['英语六级', '粤语', 'C/C++', 'JS', 'Python', 'Rust', 'Markdown']);
-  assert.equal(screen.chipWeights.uv, '400');
+  assert.deepEqual(screen.skills, ['英语六级', 'C/C++', 'Rust', 'JS']);
+  assert.deepEqual(screen.skillGroupNames, ['语言能力', '硬件开发', '嵌入式软件开发', '操作系统与工具链', 'AI/ML', '理论基础']);
+  assert.deepEqual(screen.toolchainSkills, ['Linux', 'Git', 'CI/CD', 'CMake', 'Docker', 'OpenOCD', 'VS Code']);
+  assert.deepEqual(screen.hardwareSkills, ['原理图设计', 'PCB 布局', '焊接调试', 'KiCad', 'Altium Designer']);
   assert.equal(screen.chipWeights.UV, undefined);
-  assert.equal(screen.chipWeights.U8g2, '400');
+  assert.equal(screen.chipWeights.U8g2, undefined);
   assert.equal(screen.chipWeights.U8G2, undefined);
-  assert.equal(screen.chipWeights['原理图设计'], '700');
-  assert.equal(screen.chipWeights['焊接调试'], '400');
-  assert.equal(screen.chipWeights.CNN, '400');
+  assert.deepEqual(new Set(Object.values(screen.chipWeights)), new Set(['400']));
   assert.equal(screen.chipWeights.MuJoCo, undefined);
+  assert.deepEqual(new Set(screen.chipBackgrounds), new Set(['rgb(241, 243, 242)']));
   assert.deepEqual(screen.profileFacts, ['性别：男', '年龄：21岁', '籍贯：广州']);
   assert.equal(screen.mainEducationCount, 0);
   assert(screen.profileEducation.includes('惠州学院'));
@@ -114,7 +119,7 @@ test('static resume stays read-only and supports export and printing via agent-b
   await agentBrowser('download', '#markdown-button', markdownPath);
   const markdown = await readFile(markdownPath, 'utf8');
   assert(markdown.includes('# 曹锐旋'));
-  assert(markdown.includes('> 意向：嵌入式软件实习'));
+  assert(markdown.includes('> 意向：硬件开发实习生'));
   assert(markdown.includes('## 个人概况'));
   assert(!markdown.includes('MBTI'));
   assert(!markdown.includes('INTP'));
@@ -131,12 +136,22 @@ test('static resume stays read-only and supports export and printing via agent-b
   assert(markdown.includes('| 能力方向 | 技能 |'));
   assert(markdown.includes('| --- | --- |'));
   assert(markdown.includes('| 语言能力 |'));
-  assert(markdown.includes('Rust · **Markdown**'));
-  assert(markdown.includes(' · uv · '));
-  assert(markdown.includes(' · U8g2 |'));
-  assert(markdown.includes('| 硬件开发 | **原理图设计** · **PCB 布局** · 焊接调试 |'));
+  assert(markdown.includes('**英语六级** · **C/C++** · Rust · JS'));
+  assert(!markdown.includes('粤语'));
+  assert(!markdown.includes('Python'));
+  assert(!markdown.includes('数据结构与算法'));
+  assert(!markdown.includes('控制理论'));
+  assert(!markdown.includes('Markdown'));
+  assert(!markdown.includes('Makefile'));
+  assert(!markdown.includes('SSH'));
+  assert(!markdown.includes('uv'));
+  assert(!markdown.includes('U8g2'));
+  assert(markdown.includes('**KiCad** · **Altium Designer**'));
+  assert(markdown.includes('| 硬件开发 | **原理图设计** · **PCB 布局** · 焊接调试 · **KiCad** · **Altium Designer** |'));
   assert(markdown.includes('| AI/ML | **Agent** · Skill · **PyTorch** · CNN |'));
+  assert(markdown.includes('| 理论基础 | 数电 · 模电 · 开关电源 · 微机原理 · **计算机原理** · **计算机网络** |'));
   assert(!markdown.includes('### 语言能力'));
+  assert(markdown.includes('[作品集](https://ckrvxr.notion.site)：项目经历与技术实践'));
   assert(markdown.includes('[GitHub](https://github.com/ckrvxr)'));
   assert(markdown.includes('## 个人简介'));
   assert(markdown.includes('### RoboMaster 战队｜硬件组组长'));
@@ -152,6 +167,9 @@ test('static resume stays read-only and supports export and printing via agent-b
     '- RoboMaster 2025 高校联盟赛 福建站 3v3 对抗赛 三等奖',
   ]);
   assert(markdown.includes('## 代表项目'));
+  assert(markdown.includes('### 基于 CNN 神经网络的 ESP32-S3 心率手环'));
+  assert(!markdown.includes('ESP32-S3 心率手环与 CNN 心率检测模型训练'));
+  assert(markdown.includes('- 对机甲布线与电源分配进行**系统性重构**，制定并落实电缆选用、接口定义及接线规范，**大幅**减少硬件故障导致的开发中断与跨组联调阻塞。'));
   assert(markdown.includes('**团队** · *2026.05 — 2026.07*'));
   await evaluate('window.__printCalls = 0; window.print = () => { window.__printCalls += 1; }; true');
   await agentBrowser('click', '#print-button');
@@ -170,6 +188,11 @@ test('static resume stays read-only and supports export and printing via agent-b
         documentFits: document.documentElement.scrollWidth <= innerWidth,
         titlesFit: [...document.querySelectorAll('.entry-title')].every(node => node.scrollWidth <= node.clientWidth + 1),
         profileFits: [...document.querySelectorAll('.profile-layout, .profile-education')].every(node => node.scrollWidth <= node.clientWidth + 1),
+        educationMetaInline: (() => {
+          const major = document.querySelector('.education-major').getBoundingClientRect();
+          const period = document.querySelector('.education-period').getBoundingClientRect();
+          return major.top < period.bottom && period.top < major.bottom;
+        })(),
       };
     })()`);
     assert.equal(mobile.columns, 1, `columns at ${width}px`);
@@ -180,6 +203,7 @@ test('static resume stays read-only and supports export and printing via agent-b
     assert(mobile.documentFits, `page overflow at ${width}px`);
     assert(mobile.titlesFit, `title overflow at ${width}px`);
     assert(mobile.profileFits, `profile overflow at ${width}px`);
+    assert(mobile.educationMetaInline, `education metadata should share a row at ${width}px`);
   }
   for (const width of [768, 1024, 1440]) {
     await agentBrowser('set', 'viewport', String(width), '1000');
@@ -201,6 +225,7 @@ test('static resume stays read-only and supports export and printing via agent-b
       titleBorder: title.borderLeftColor,
       chipBackground: chip.backgroundColor,
       chipBackgroundImage: chip.backgroundImage,
+      chipBorder: chip.borderColor,
       chipShadow: chip.boxShadow,
       decorationDisplay: decoration.display,
       pageTransition: getComputedStyle(document.querySelector('.page')).transitionDuration,
@@ -209,9 +234,10 @@ test('static resume stays read-only and supports export and printing via agent-b
   assert.equal(printStyles.ink, '#22313a');
   assert.equal(printStyles.titleBackground, 'rgb(229, 241, 247)');
   assert.equal(printStyles.titleBorder, 'rgb(47, 120, 128)');
-  assert.equal(printStyles.chipBackground, 'rgb(229, 240, 237)');
-  assert.match(printStyles.chipBackgroundImage, /linear-gradient/);
-  assert.match(printStyles.chipShadow, /inset/);
+  assert.equal(printStyles.chipBackground, 'rgb(255, 255, 255)');
+  assert.equal(printStyles.chipBackgroundImage, 'none');
+  assert.equal(printStyles.chipBorder, 'rgb(174, 184, 180)');
+  assert.equal(printStyles.chipShadow, 'none');
   assert.equal(printStyles.decorationDisplay, 'block');
   assert.equal(printStyles.pageTransition, '0s');
   const { data } = await print('Page.printToPDF', {
