@@ -46,7 +46,7 @@ test('Markdown export and print button work', { timeout: 120_000 }, async t => {
   assert(markdown.includes('### RoboMaster 战队｜硬件组组长'));
   assert(markdown.includes('- 负责电源模块设计、单片机核心板设计与机器人布线工作。'));
   assert(markdown.includes('- 负责电控底盘代码编写，拥有软硬件协同调试经验。'));
-  assert(markdown.includes('- 制定硬件组技术规范、教学文档，负责培训新成员。'));
+  assert(markdown.includes('- 负责制定硬件组技术规范、教学文档，培训新成员。'));
   assert(!markdown.includes('（非甲级队伍）'));
   const awards = markdown.split('## 获奖情况')[1].split('## 代表项目')[0].trim().split('\n');
   assert.deepEqual(awards, [
