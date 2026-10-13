@@ -50,10 +50,10 @@ test('Markdown export and print button work', { timeout: 120_000 }, async t => {
   assert(!markdown.includes('（非甲级队伍）'));
   const awards = markdown.split('## 获奖情况')[1].split('## 代表项目')[0].trim().split('\n');
   assert.deepEqual(awards, [
-    '- RoboMaster 2026 高校联盟赛 华南站 工程挑战赛 一等奖',
-    '- RoboMaster 2024 高校联盟赛 华南站 步兵对抗赛 二等奖',
-    '- RoboMaster 2026 高校联盟赛 华南站 3v3 对抗赛 三等奖',
-    '- RoboMaster 2025 高校联盟赛 福建站 3v3 对抗赛 三等奖',
+    '- RoboMaster 2026 高校联盟赛 华南站 工程挑战赛 **一等奖**',
+    '- RoboMaster 2024 高校联盟赛 华南站 步兵对抗赛 **二等奖**',
+    '- RoboMaster 2026 高校联盟赛 华南站 3v3 对抗赛 **三等奖**',
+    '- RoboMaster 2025 高校联盟赛 福建站 3v3 对抗赛 **三等奖**',
   ]);
   assert(markdown.includes('## 代表项目'));
   assert(markdown.includes('### 基于 CNN 神经网络的 ESP32-S3 心率手环'));

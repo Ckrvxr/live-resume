@@ -61,8 +61,9 @@ test('resume content matches the intended profile, skills, and experience', { ti
   assert(screen.profileEducation.includes('电子信息工程（本科）'));
   assert(screen.profileEducation.includes('2023.09 — 至今'));
   assert(!screen.profileEducation.includes('主修课程'));
-  assert(screen.intro.includes('高密度 PCB 设计、嵌入式软件开发'));
-  assert(screen.intro.includes('软硬件协同调试'));
+  assert(screen.intro.includes('在 RM 战队担任硬件开发工作 3 年，深度参与高密度 PCB 设计与嵌入式软件开发。'));
+  assert(screen.intro.includes('能够无障碍查阅各类英文技术文献，独立定位问题并开展软硬件协同调试。'));
+  assert(screen.intro.includes('善于在 Linux 操作系统使用 Git、Agent 等工具进行快速开发。'));
   assert(screen.campus.includes('RoboMaster 战队｜硬件组组长'));
   assert(!screen.campus.includes('惠州学院'));
   assert.deepEqual(screen.awards, [
