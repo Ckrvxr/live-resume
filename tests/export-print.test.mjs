@@ -7,12 +7,13 @@ import { createArtifacts, openResume } from './helpers.mjs';
 test('Markdown export and print button work', { timeout: 120_000 }, async t => {
   const artifacts = await createArtifacts('resume-export-print');
   const { browser, evaluate } = await openResume(t);
+  assert.equal(await evaluate('document.title'), '曹锐旋简历');
 
   const markdownPath = resolve(artifacts, 'resume.md');
   await browser('download', '#markdown-button', markdownPath);
   const markdown = await readFile(markdownPath, 'utf8');
   assert(markdown.includes('# 曹锐旋'));
-  assert(markdown.includes('> 意向：硬件开发实习生'));
+  assert(markdown.includes('> 意向：嵌入式硬件工程师'));
   assert(markdown.includes('## 个人概况'));
   assert(!markdown.includes('MBTI'));
   assert(!markdown.includes('INTP'));
@@ -45,7 +46,7 @@ test('Markdown export and print button work', { timeout: 120_000 }, async t => {
   assert(markdown.includes('## 个人简介'));
   assert(markdown.includes('### RoboMaster 战队｜硬件组组长'));
   assert(markdown.includes('- 负责电源模块设计、单片机核心板设计与机器人布线工作。'));
-  assert(markdown.includes('- 负责电控底盘代码编写，拥有软硬件协同调试经验。'));
+  assert(markdown.includes('- 负责电控底盘代码编写与软硬件协同调试。'));
   assert(markdown.includes('- 负责制定硬件组技术规范、教学文档，培训新成员。'));
   assert(!markdown.includes('（非甲级队伍）'));
   const awards = markdown.split('## 获奖情况')[1].split('## 代表项目')[0].trim().split('\n');
